@@ -46,6 +46,11 @@ public/flat*.jpg
 public/boot*.jpg
 public/sneaker*.jpg
 public/sandal*.jpg
+public/stevie-*.jpg
+public/classic-*.jpg
+public/ballet-*.jpg
+public/canvas-*.jpg
+public/leather-*.jpg
 public/*.webp
 public/*.avif
 public/*.jxl

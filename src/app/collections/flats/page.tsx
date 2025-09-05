@@ -27,13 +27,10 @@ interface Product {
 
 const flatsProducts: Product[] = [
   {
-    id: "flat-1",
-    name: "Classic Ballet Flats",
-    price: "$89.00",
-    originalPrice: "$109.00",
+    id: "ballet-flat-black",
+    name: "Classic Ballet Flats in Black Leather",
+    price: "$98.00",
     image: "/flat1.jpg",
-    badge: "Sale",
-    isSale: true,
     category: "flats",
     subcategory: "ballet-flats",
   },
