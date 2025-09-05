@@ -29,10 +29,14 @@ export default function Header() {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center text-sm">
             <p>Free shipping on orders over $100</p>
-            <div className="flex items-center gap-2 bg-primary text-primary-foreground px-3 py-1 rounded-full">
-              <span className="text-xs font-medium">Retail</span>
-              <Switch checked={isB2BMode} onCheckedChange={setIsB2BMode} />
-              <span className="text-xs font-medium">Business</span>
+            <div className="flex items-center gap-2 bg-muted px-1 py-1 rounded-full">
+              <span className="text-xs font-medium text-muted-foreground">Retail</span>
+              <Switch 
+                checked={isB2BMode} 
+                onCheckedChange={setIsB2BMode}
+                className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground"
+              />
+              <span className="text-xs font-medium text-muted-foreground">Business</span>
             </div>
           </div>
         </div>
