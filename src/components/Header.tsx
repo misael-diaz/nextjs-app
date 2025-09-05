@@ -57,16 +57,21 @@ export default function Header() {
                         {item.name}
                       </Link>
                       <div className="pl-4 space-y-1">
-                        {item.submenu.map((subItem) => (
-                          <Link
-                            key={subItem}
-                            href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="block text-sm text-muted-foreground hover:text-foreground"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {subItem}
-                          </Link>
-                        ))}
+                        {item.submenu.map((subItem) => {
+                          const subHref = subItem === "Shop all" 
+                            ? item.href 
+                            : `${item.href}?filter=${subItem.toLowerCase().replace(/\s+/g, '-')}`;
+                          return (
+                            <Link
+                              key={subItem}
+                              href={subHref}
+                              className="block text-sm text-muted-foreground hover:text-foreground"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              {subItem}
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}
@@ -97,15 +102,20 @@ export default function Header() {
                 {/* Dropdown Menu */}
                 <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="py-2">
-                    {item.submenu.map((subItem) => (
-                      <Link
-                        key={subItem}
-                        href={`${item.href}/${subItem.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted"
-                      >
-                        {subItem}
-                      </Link>
-                    ))}
+                    {item.submenu.map((subItem) => {
+                      const subHref = subItem === "Shop all" 
+                        ? item.href 
+                        : `${item.href}?filter=${subItem.toLowerCase().replace(/\s+/g, '-')}`;
+                      return (
+                        <Link
+                          key={subItem}
+                          href={subHref}
+                          className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted"
+                        >
+                          {subItem}
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

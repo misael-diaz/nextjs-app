@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -69,8 +70,17 @@ const flatsProducts: Product[] = [
 
 export default function FlatsPage() {
   const { dispatch } = useCart();
+  const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState('featured');
   const [filterBy, setFilterBy] = useState('all');
+
+  // Read filter from URL on component mount
+  useEffect(() => {
+    const filter = searchParams.get('filter');
+    if (filter) {
+      setFilterBy(filter);
+    }
+  }, [searchParams]);
 
   const handleAddToCart = (product: Product) => {
     dispatch({ 
