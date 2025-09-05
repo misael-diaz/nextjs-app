@@ -45,8 +45,8 @@ const collections = [
     id: "sandals",
     name: "Sandals",
     description: "Step into summer with our stylish sandal collection",
-    image: "/sandal1.jpg",
-    productCount: "4 products",
+    image: "/leather-sandal-brown.jpg",
+    productCount: "6 products",
     href: "/collections/sandals",
   },
 ];
