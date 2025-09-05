@@ -58,7 +58,7 @@ const products: Product[] = [
     id: "block-heel-nude",
     name: "Comfort Block Heels in Nude Suede",
     price: "$168.00",
-    image: "/heel2.jpg",
+    image: "/block-heel-nude-new.jpg",
   },
   {
     id: "ballet-flat-black",
@@ -70,7 +70,7 @@ const products: Product[] = [
     id: "canvas-sneaker-white",
     name: "Classic Canvas Sneakers in White",
     price: "$78.00",
-    image: "/canvas-sneaker-white.jpg",
+    image: "/canvas-sneaker-white-new.jpg",
   },
   {
     id: "leather-sandal-brown",
