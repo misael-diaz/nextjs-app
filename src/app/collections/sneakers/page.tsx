@@ -27,15 +27,12 @@ interface Product {
 
 const sneakersProducts: Product[] = [
   {
-    id: "sneaker-1",
-    name: "Classic Running Sneakers",
-    price: "$119.00",
-    originalPrice: "$139.00",
-    image: "/sneaker1.jpg",
-    badge: "Sale",
-    isSale: true,
+    id: "canvas-sneaker-white",
+    name: "Classic Canvas Sneakers in White",
+    price: "$78.00",
+    image: "/canvas-sneaker-white-new.jpg",
     category: "sneakers",
-    subcategory: "running",
+    subcategory: "canvas",
   },
   {
     id: "sneaker-2",

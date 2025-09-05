@@ -27,15 +27,12 @@ interface Product {
 
 const sandalsProducts: Product[] = [
   {
-    id: "sandal-1",
-    name: "Classic Flat Sandals",
-    price: "$79.00",
-    originalPrice: "$99.00",
-    image: "/sandal1.jpg",
-    badge: "Sale",
-    isSale: true,
+    id: "leather-sandal-brown",
+    name: "Leather Strappy Sandals in Brown",
+    price: "$128.00",
+    image: "/leather-sandal-brown.jpg",
     category: "sandals",
-    subcategory: "flat-sandals",
+    subcategory: "strappy",
   },
   {
     id: "sandal-2",
