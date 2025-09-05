@@ -6,13 +6,15 @@ import { Heart, Award, Users, Globe } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/5 to-background text-foreground relative overflow-hidden">
       {/* Fun Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/4 left-1/2 w-48 h-48 bg-primary/8 rounded-full blur-2xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-secondary/30 rounded-full blur-3xl animate-bounce"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/2 w-48 h-48 bg-primary/25 rounded-full blur-2xl animate-bounce"></div>
+        <div className="absolute top-3/4 right-1/3 w-32 h-32 bg-secondary/15 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-accent/20 rounded-full blur-2xl animate-bounce"></div>
       </div>
       
       <Header />
@@ -20,17 +22,17 @@ export default function AboutPage() {
       <main className="container mx-auto px-4 py-16 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 rounded-3xl blur-2xl"></div>
-          <div className="relative bg-background/80 backdrop-blur-sm rounded-2xl p-8 border border-border/50">
-            <Badge variant="secondary" className="mb-4 animate-pulse">
-              About FlowStyle
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/5 to-accent/10 rounded-3xl blur-3xl animate-pulse"></div>
+          <div className="relative bg-gradient-to-br from-background/90 via-background/80 to-background/90 backdrop-blur-md rounded-3xl p-12 border-2 border-primary/20 shadow-2xl">
+            <Badge variant="secondary" className="mb-6 animate-bounce text-lg px-4 py-2">
+              ✨ About FlowStyle ✨
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent animate-pulse">
               Where Style Meets
               <br />
-              <span className="text-primary">Comfort</span>
+              <span className="text-primary drop-shadow-lg">Comfort</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               At FlowStyle, we believe that every step should be a statement. Our curated collection 
               of women's shoes combines timeless elegance with modern comfort, designed for the 
               confident woman who values both style and substance.
