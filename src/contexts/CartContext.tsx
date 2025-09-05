@@ -29,7 +29,6 @@ const CartContext = createContext<{
 } | null>(null);
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
-  console.log('Cart reducer action:', action);
   switch (action.type) {
     case 'ADD_TO_CART': {
       const existingItem = state.items.find(item => item.id === action.payload.id);

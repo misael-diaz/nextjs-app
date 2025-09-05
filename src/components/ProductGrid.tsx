@@ -88,7 +88,6 @@ export default function ProductGrid() {
   const { dispatch } = useCart();
 
   const handleAddToCart = (product: Product) => {
-    console.log('Adding to cart:', product);
     dispatch({ 
       type: 'ADD_TO_CART', 
       payload: {
