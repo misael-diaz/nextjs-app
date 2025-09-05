@@ -222,6 +222,13 @@ export default function AllProductsPage() {
       product.category.toLowerCase().includes(searchLower) ||
       product.subcategory.toLowerCase().includes(searchLower);
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+    
+    // Debug logging
+    if (searchTerm) {
+      console.log(`Searching for: "${searchTerm}"`);
+      console.log(`Product: ${product.name}, matches: ${matchesSearch}`);
+    }
+    
     return matchesSearch && matchesCategory;
   });
 
@@ -328,6 +335,7 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground">
             Showing {sortedProducts.length} of {allProducts.length} products
             {selectedCategory !== "all" && ` in ${categories.find(c => c.value === selectedCategory)?.label}`}
+            {searchTerm && ` matching "${searchTerm}"`}
           </p>
         </div>
 
