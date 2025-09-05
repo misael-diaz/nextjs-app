@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface B2BContextType {
   isB2BMode: boolean;
@@ -12,6 +12,19 @@ const B2BContext = createContext<B2BContextType | null>(null);
 
 export const B2BProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isB2BMode, setIsB2BMode] = useState(false);
+
+  // Load B2B mode from localStorage on mount
+  useEffect(() => {
+    const savedB2BMode = localStorage.getItem('b2b-mode');
+    if (savedB2BMode !== null) {
+      setIsB2BMode(JSON.parse(savedB2BMode));
+    }
+  }, []);
+
+  // Save B2B mode to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('b2b-mode', JSON.stringify(isB2BMode));
+  }, [isB2BMode]);
 
   // Calculate wholesale price (20% discount for business customers)
   const getWholesalePrice = (retailPrice: string): string => {
