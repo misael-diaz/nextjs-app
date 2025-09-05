@@ -268,6 +268,164 @@ const products = {
     inStock: true,
     isNew: false,
     badge: 'Sale'
+  },
+  'platform-heel-black': {
+    id: 'platform-heel-black',
+    name: 'Platform Heels in Black Patent',
+    price: '$228.00',
+    originalPrice: '$268.00',
+    image: '/heel4.jpg',
+    images: ['/heel4.jpg', '/heel1.jpg', '/heel2.jpg', '/heel3.jpg'],
+    category: 'Heels',
+    subcategory: 'Platform',
+    description: 'Dramatic platform heels in glossy black patent leather. These statement heels add height and sophistication to any outfit.',
+    features: [
+      'Black patent leather',
+      'Platform sole design',
+      'Statement height',
+      'Glossy finish',
+      'Sophisticated look'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11'],
+    colors: ['Black', 'Nude', 'Red'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
+  },
+  'comfort-oxfords': {
+    id: 'comfort-oxfords',
+    name: 'Comfort Oxfords in Brown Leather',
+    price: '$99.00',
+    image: '/flat3.jpg',
+    images: ['/flat3.jpg', '/flat1.jpg', '/flat2.jpg', '/flat4.jpg'],
+    category: 'Flats',
+    subcategory: 'Oxfords',
+    description: 'Classic oxford shoes in rich brown leather with a comfortable sole. Perfect for both professional and casual settings.',
+    features: [
+      'Rich brown leather',
+      'Classic oxford design',
+      'Comfortable sole',
+      'Professional styling',
+      'Versatile wear'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11'],
+    colors: ['Brown', 'Black', 'Tan'],
+    inStock: true,
+    isNew: false,
+    badge: null
+  },
+  'designer-mules': {
+    id: 'designer-mules',
+    name: 'Designer Mules in Black Suede',
+    price: '$129.00',
+    originalPrice: '$149.00',
+    image: '/flat4.jpg',
+    images: ['/flat4.jpg', '/flat1.jpg', '/flat2.jpg', '/flat3.jpg'],
+    category: 'Flats',
+    subcategory: 'Mules',
+    description: 'Elegant mules in soft black suede with a modern silhouette. Easy to slip on and perfect for transitional weather.',
+    features: [
+      'Soft black suede',
+      'Modern silhouette',
+      'Slip-on design',
+      'Comfortable fit',
+      'Transitional styling'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11'],
+    colors: ['Black', 'Nude', 'Brown'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
+  },
+  'heeled-sandals': {
+    id: 'heeled-sandals',
+    name: 'Heeled Sandals in Nude',
+    price: '$129.00',
+    image: '/sandal2.jpg',
+    images: ['/sandal2.jpg', '/sandal1.jpg', '/sandal3.jpg', '/sandal4.jpg'],
+    category: 'Sandals',
+    subcategory: 'Heeled',
+    description: 'Sophisticated heeled sandals in a flattering nude color. Perfect for evening events and special occasions.',
+    features: [
+      'Flattering nude color',
+      'Elegant heel height',
+      'Sophisticated design',
+      'Evening perfect',
+      'Special occasion ready'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'],
+    colors: ['Nude', 'Black', 'Gold'],
+    inStock: true,
+    isNew: true,
+    badge: 'New'
+  },
+  'wedge-sandals': {
+    id: 'wedge-sandals',
+    name: 'Wedge Sandals in Natural',
+    price: '$109.00',
+    image: '/sandal3.jpg',
+    images: ['/sandal3.jpg', '/sandal1.jpg', '/sandal2.jpg', '/sandal4.jpg'],
+    category: 'Sandals',
+    subcategory: 'Wedge',
+    description: 'Comfortable wedge sandals in natural materials. The wedge sole provides height while maintaining comfort for all-day wear.',
+    features: [
+      'Natural materials',
+      'Comfortable wedge sole',
+      'All-day comfort',
+      'Versatile styling',
+      'Summer perfect'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'],
+    colors: ['Natural', 'Brown', 'Black'],
+    inStock: true,
+    isNew: false,
+    badge: null
+  },
+  'designer-slides': {
+    id: 'designer-slides',
+    name: 'Designer Slides in Black',
+    price: '$89.00',
+    originalPrice: '$119.00',
+    image: '/sandal4.jpg',
+    images: ['/sandal4.jpg', '/sandal1.jpg', '/sandal2.jpg', '/sandal3.jpg'],
+    category: 'Sandals',
+    subcategory: 'Slide',
+    description: 'Minimalist designer slides in sleek black. Perfect for poolside, beach, or casual summer days.',
+    features: [
+      'Sleek black design',
+      'Minimalist style',
+      'Easy slip-on',
+      'Poolside perfect',
+      'Summer essential'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'],
+    colors: ['Black', 'White', 'Brown'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
+  },
+  'combat-boots': {
+    id: 'combat-boots',
+    name: 'Combat Boots in Black Leather',
+    price: '$169.00',
+    originalPrice: '$199.00',
+    image: '/boot4.jpg',
+    images: ['/boot4.jpg', '/boot1.jpg', '/boot2.jpg', '/boot3.jpg'],
+    category: 'Boots',
+    subcategory: 'Combat',
+    description: 'Edgy combat boots in durable black leather with a chunky sole. Perfect for adding attitude to any outfit.',
+    features: [
+      'Durable black leather',
+      'Chunky sole design',
+      'Edgy aesthetic',
+      'Comfortable fit',
+      'Statement piece'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11'],
+    colors: ['Black', 'Brown', 'Tan'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
   }
 };
 
