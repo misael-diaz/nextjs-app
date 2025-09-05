@@ -4,15 +4,26 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Switch } from "@/components/ui/switch";
-import { Menu, Search, User, Building2, ShoppingBag } from "lucide-react";
+import { Menu, Search, User, Building2, ShoppingBag, LogOut } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import CartDrawer from "@/components/CartDrawer";
 import { useB2B } from "@/contexts/B2BContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isB2BMode, setIsB2BMode } = useB2B();
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully");
+    router.push("/");
+  };
 
   const navigationItems = [
     { name: "Heels", href: "/collections/heels", submenu: ["Shop all", "Stilettos", "Block Heels", "Wedges"] },
@@ -142,12 +153,33 @@ export default function Header() {
                 <span className="sr-only">Search</span>
               </Link>
             </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/profile">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Account</span>
-              </Link>
-            </Button>
+            
+            {user ? (
+              // Logged in - show profile and logout
+              <>
+                <Button variant="ghost" size="icon" asChild>
+                  <Link href="/profile">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Account</span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              // Not logged in - show login and register buttons
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/auth/login">Login</Link>
+                </Button>
+                <Button size="sm" asChild>
+                  <Link href="/auth/register">Register</Link>
+                </Button>
+              </>
+            )}
+            
             <CartDrawer />
           </div>
         </div>
