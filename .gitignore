@@ -41,6 +41,7 @@ yarn-error.log*
 next-env.d.ts
 # Downloaded assets - avoid copyright issues
 public/shoe*.jpg
+public/heel*.jpg
 public/*.webp
 public/*.avif
 public/*.jxl
