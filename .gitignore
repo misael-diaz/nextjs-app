@@ -42,6 +42,10 @@ next-env.d.ts
 # Downloaded assets - avoid copyright issues
 public/shoe*.jpg
 public/heel*.jpg
+public/flat*.jpg
+public/boot*.jpg
+public/sneaker*.jpg
+public/sandal*.jpg
 public/*.webp
 public/*.avif
 public/*.jxl
