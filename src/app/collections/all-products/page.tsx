@@ -216,14 +216,20 @@ export default function AllProductsPage() {
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
 
-  // Debounce search term - wait 300ms after user stops typing
+  // Debounce search term - wait 500ms after user stops typing
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('Search term changed:', searchTerm);
+    console.log('Debounced term:', debouncedSearchTerm);
+  }, [searchTerm, debouncedSearchTerm]);
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
