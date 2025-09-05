@@ -47,7 +47,7 @@ const heelsProducts: Product[] = [
     name: "Platform Heels in Black Patent",
     price: "$228.00",
     originalPrice: "$268.00",
-    image: "/heel4.jpg",
+    image: "/platform-heel-black.jpg",
     badge: "Sale",
     isSale: true,
     category: "heels",

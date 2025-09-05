@@ -63,7 +63,7 @@ const bootsProducts: Product[] = [
     name: "Combat Boots in Black Leather",
     price: "$169.00",
     originalPrice: "$199.00",
-    image: "/boot4.jpg",
+    image: "/combat-boots-black.jpg",
     badge: "Sale",
     isSale: true,
     category: "boots",
