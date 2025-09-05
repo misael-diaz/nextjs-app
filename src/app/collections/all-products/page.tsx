@@ -210,36 +210,32 @@ const allProducts: Product[] = [
 
 export default function AllProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [activeSearchTerm, setActiveSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
 
-  // Debounce search term - wait 500ms after user stops typing
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
+  // Handle search submission
+  const handleSearch = () => {
+    setActiveSearchTerm(searchTerm);
+  };
 
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  // Debug logging
-  useEffect(() => {
-    console.log('Search term changed:', searchTerm);
-    console.log('Debounced term:', debouncedSearchTerm);
-  }, [searchTerm, debouncedSearchTerm]);
+  // Handle Enter key press
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   const filteredProducts = useMemo(() => {
-    console.log('Filtering with debounced term:', debouncedSearchTerm);
     return allProducts.filter((product) => {
-      if (!debouncedSearchTerm.trim()) {
+      if (!activeSearchTerm.trim()) {
         // If no search term, only filter by category
         return selectedCategory === "all" || product.category === selectedCategory;
       }
       
-      const searchLower = debouncedSearchTerm.toLowerCase().trim();
+      const searchLower = activeSearchTerm.toLowerCase().trim();
       const matchesSearch = 
         product.name.toLowerCase().includes(searchLower) ||
         product.category.toLowerCase().includes(searchLower) ||
@@ -249,7 +245,7 @@ export default function AllProductsPage() {
       
       return matchesSearch && matchesCategory;
     });
-  }, [debouncedSearchTerm, selectedCategory]);
+  }, [activeSearchTerm, selectedCategory]);
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -300,14 +296,9 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground text-lg">
             Discover our complete collection of {allProducts.length} premium shoes
           </p>
-          {searchTerm && !debouncedSearchTerm && (
-            <div className="mt-4 p-3 bg-yellow-100 rounded-lg">
-              <p className="text-sm">Typing... <strong>"{searchTerm}"</strong></p>
-            </div>
-          )}
-          {debouncedSearchTerm && (
+          {activeSearchTerm && (
             <div className="mt-4 p-3 bg-primary/10 rounded-lg">
-              <p className="text-sm">Searching for: <strong>"{debouncedSearchTerm}"</strong></p>
+              <p className="text-sm">Searching for: <strong>"{activeSearchTerm}"</strong></p>
             </div>
           )}
         </div>
@@ -318,19 +309,32 @@ export default function AllProductsPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Search products, categories, or styles..."
+                placeholder="Search products, categories, or styles... (Press Enter to search)"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-10"
+                onKeyPress={handleKeyPress}
+                className="pl-10 pr-20"
               />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+                {searchTerm && (
+                  <button
+                    onClick={() => {
+                      setSearchTerm("");
+                      setActiveSearchTerm("");
+                    }}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    ✕
+                  </button>
+                )}
+                <Button
+                  onClick={handleSearch}
+                  size="sm"
+                  className="h-6 px-2 text-xs"
                 >
-                  ✕
-                </button>
-              )}
+                  Search
+                </Button>
+              </div>
             </div>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-full sm:w-48">
@@ -364,7 +368,7 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground">
             Showing {sortedProducts.length} of {allProducts.length} products
             {selectedCategory !== "all" && ` in ${categories.find(c => c.value === selectedCategory)?.label}`}
-            {debouncedSearchTerm && ` matching "${debouncedSearchTerm}"`}
+            {activeSearchTerm && ` matching "${activeSearchTerm}"`}
           </p>
         </div>
 
