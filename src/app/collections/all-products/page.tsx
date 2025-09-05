@@ -232,6 +232,7 @@ export default function AllProductsPage() {
   }, [searchTerm, debouncedSearchTerm]);
 
   const filteredProducts = useMemo(() => {
+    console.log('Filtering with debounced term:', debouncedSearchTerm);
     return allProducts.filter((product) => {
       if (!debouncedSearchTerm.trim()) {
         // If no search term, only filter by category
@@ -299,6 +300,11 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground text-lg">
             Discover our complete collection of {allProducts.length} premium shoes
           </p>
+          {searchTerm && !debouncedSearchTerm && (
+            <div className="mt-4 p-3 bg-yellow-100 rounded-lg">
+              <p className="text-sm">Typing... <strong>"{searchTerm}"</strong></p>
+            </div>
+          )}
           {debouncedSearchTerm && (
             <div className="mt-4 p-3 bg-primary/10 rounded-lg">
               <p className="text-sm">Searching for: <strong>"{debouncedSearchTerm}"</strong></p>
