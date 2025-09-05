@@ -3,10 +3,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag, Building2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
+import { useB2B } from "@/contexts/B2BContext";
 import { toast } from "sonner";
 
 interface Product {
@@ -86,6 +87,7 @@ const products: Product[] = [
 
 export default function ProductGrid() {
   const { dispatch } = useCart();
+  const { isB2BMode, getWholesalePrice } = useB2B();
 
   const handleAddToCart = (product: Product) => {
     dispatch({ 
@@ -109,6 +111,12 @@ export default function ProductGrid() {
             Discover our carefully curated selection of women's shoes, 
             each designed with comfort, style, and exceptional craftsmanship.
           </p>
+          {isB2BMode && (
+            <div className="mt-4 inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
+              <Building2 className="h-4 w-4" />
+              Business Pricing Active (20% off)
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -159,9 +167,14 @@ export default function ProductGrid() {
                 
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-lg font-bold text-primary">
-                    {product.price}
+                    {isB2BMode ? getWholesalePrice(product.price) : product.price}
                   </span>
-                  {product.originalPrice && (
+                  {isB2BMode && (
+                    <span className="text-sm text-muted-foreground line-through">
+                      {product.price}
+                    </span>
+                  )}
+                  {!isB2BMode && product.originalPrice && (
                     <span className="text-sm text-muted-foreground line-through">
                       {product.originalPrice}
                     </span>

@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Search, User } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Menu, Search, User, Building2, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import CartDrawer from "@/components/CartDrawer";
+import { useB2B } from "@/contexts/B2BContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isB2BMode, setIsB2BMode } = useB2B();
 
   const navigationItems = [
     { name: "Heels", href: "/collections/heels", submenu: ["Shop all", "Stilettos", "Block Heels", "Wedges"] },
@@ -24,8 +27,13 @@ export default function Header() {
       {/* Top Bar */}
       <div className="bg-primary text-primary-foreground py-2">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center text-sm">
+          <div className="flex justify-between items-center text-sm">
             <p>Free shipping on orders over $100</p>
+            <div className="flex items-center gap-2">
+              <span>Retail</span>
+              <Switch checked={isB2BMode} onCheckedChange={setIsB2BMode} />
+              <span>Business</span>
+            </div>
           </div>
         </div>
       </div>
