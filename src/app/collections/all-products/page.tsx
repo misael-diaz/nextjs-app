@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -210,27 +210,39 @@ const allProducts: Product[] = [
 
 export default function AllProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
 
-  const filteredProducts = allProducts.filter((product) => {
-    if (!searchTerm.trim()) {
-      // If no search term, only filter by category
-      return selectedCategory === "all" || product.category === selectedCategory;
-    }
-    
-    const searchLower = searchTerm.toLowerCase().trim();
-    const matchesSearch = 
-      product.name.toLowerCase().includes(searchLower) ||
-      product.category.toLowerCase().includes(searchLower) ||
-      product.subcategory.toLowerCase().includes(searchLower);
-    
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    
-    return matchesSearch && matchesCategory;
-  });
+  // Debounce search term - wait 300ms after user stops typing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const filteredProducts = useMemo(() => {
+    return allProducts.filter((product) => {
+      if (!debouncedSearchTerm.trim()) {
+        // If no search term, only filter by category
+        return selectedCategory === "all" || product.category === selectedCategory;
+      }
+      
+      const searchLower = debouncedSearchTerm.toLowerCase().trim();
+      const matchesSearch = 
+        product.name.toLowerCase().includes(searchLower) ||
+        product.category.toLowerCase().includes(searchLower) ||
+        product.subcategory.toLowerCase().includes(searchLower);
+      
+      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [debouncedSearchTerm, selectedCategory]);
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -281,9 +293,9 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground text-lg">
             Discover our complete collection of {allProducts.length} premium shoes
           </p>
-          {searchTerm && (
+          {debouncedSearchTerm && (
             <div className="mt-4 p-3 bg-primary/10 rounded-lg">
-              <p className="text-sm">Searching for: <strong>"{searchTerm}"</strong></p>
+              <p className="text-sm">Searching for: <strong>"{debouncedSearchTerm}"</strong></p>
             </div>
           )}
         </div>
@@ -340,7 +352,7 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground">
             Showing {sortedProducts.length} of {allProducts.length} products
             {selectedCategory !== "all" && ` in ${categories.find(c => c.value === selectedCategory)?.label}`}
-            {searchTerm && ` matching "${searchTerm}"`}
+            {debouncedSearchTerm && ` matching "${debouncedSearchTerm}"`}
           </p>
         </div>
 
