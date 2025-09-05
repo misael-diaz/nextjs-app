@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CartDrawer() {
   const { state, dispatch } = useCart();
@@ -129,20 +130,32 @@ export default function CartDrawer() {
                   </span>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="space-y-2">
                   <Button 
-                    className="flex-1" 
+                    className="w-full" 
+                    asChild
                     onClick={() => setIsOpen(false)}
                   >
-                    Continue Shopping
+                    <Link href="/checkout">
+                      Proceed to Checkout
+                    </Link>
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={handleClearCart}
-                    className="px-3"
-                  >
-                    Clear Cart
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Continue Shopping
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={handleClearCart}
+                      className="px-3"
+                    >
+                      Clear Cart
+                    </Button>
+                  </div>
                 </div>
               </div>
             </>
