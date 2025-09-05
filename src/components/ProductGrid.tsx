@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Heart, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -81,6 +83,21 @@ const products: Product[] = [
 ];
 
 export default function ProductGrid() {
+  const { dispatch } = useCart();
+
+  const handleAddToCart = (product: Product) => {
+    dispatch({ 
+      type: 'ADD_TO_CART', 
+      payload: {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image
+      }
+    });
+    toast.success(`${product.name} added to cart!`);
+  };
+
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
@@ -119,7 +136,12 @@ export default function ProductGrid() {
                     <Button size="icon" variant="secondary" className="h-8 w-8">
                       <Heart className="h-4 w-4" />
                     </Button>
-                    <Button size="icon" variant="secondary" className="h-8 w-8">
+                    <Button 
+                      size="icon" 
+                      variant="secondary" 
+                      className="h-8 w-8"
+                      onClick={() => handleAddToCart(product)}
+                    >
                       <ShoppingBag className="h-4 w-4" />
                     </Button>
                   </div>
@@ -144,7 +166,11 @@ export default function ProductGrid() {
                   )}
                 </div>
 
-                <Button className="w-full" size="sm">
+                <Button 
+                  className="w-full" 
+                  size="sm"
+                  onClick={() => handleAddToCart(product)}
+                >
                   Add to Cart
                 </Button>
               </CardContent>

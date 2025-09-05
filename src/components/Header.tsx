@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Search, ShoppingBag, User } from "lucide-react";
+import { Menu, Search, User } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import CartDrawer from "@/components/CartDrawer";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -121,13 +122,7 @@ export default function Header() {
               <User className="h-5 w-5" />
               <span className="sr-only">Account</span>
             </Button>
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingBag className="h-5 w-5" />
-              <span className="sr-only">Shopping bag</span>
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
-                0
-              </span>
-            </Button>
+            <CartDrawer />
           </div>
         </div>
       </div>
