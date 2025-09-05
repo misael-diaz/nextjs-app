@@ -216,18 +216,18 @@ export default function AllProductsPage() {
   const { isB2BMode, getWholesalePrice } = useB2B();
 
   const filteredProducts = allProducts.filter((product) => {
+    if (!searchTerm.trim()) {
+      // If no search term, only filter by category
+      return selectedCategory === "all" || product.category === selectedCategory;
+    }
+    
     const searchLower = searchTerm.toLowerCase().trim();
-    const matchesSearch = searchLower === "" || 
+    const matchesSearch = 
       product.name.toLowerCase().includes(searchLower) ||
       product.category.toLowerCase().includes(searchLower) ||
       product.subcategory.toLowerCase().includes(searchLower);
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
     
-    // Debug logging
-    if (searchTerm) {
-      console.log(`Searching for: "${searchTerm}"`);
-      console.log(`Product: ${product.name}, matches: ${matchesSearch}`);
-    }
+    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
     
     return matchesSearch && matchesCategory;
   });
@@ -281,6 +281,11 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground text-lg">
             Discover our complete collection of {allProducts.length} premium shoes
           </p>
+          {searchTerm && (
+            <div className="mt-4 p-3 bg-primary/10 rounded-lg">
+              <p className="text-sm">Searching for: <strong>"{searchTerm}"</strong></p>
+            </div>
+          )}
         </div>
 
         {/* Filters */}
