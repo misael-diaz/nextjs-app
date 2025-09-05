@@ -183,8 +183,6 @@ export default function FacebookPage() {
           </div>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 }

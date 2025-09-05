@@ -191,8 +191,6 @@ export default function TwitterPage() {
           </div>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 }
