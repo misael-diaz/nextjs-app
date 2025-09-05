@@ -142,9 +142,11 @@ export default function Header() {
                 <span className="sr-only">Search</span>
               </Link>
             </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-              <span className="sr-only">Account</span>
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/profile">
+                <User className="h-5 w-5" />
+                <span className="sr-only">Account</span>
+              </Link>
             </Button>
             <CartDrawer />
           </div>
