@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
 import { B2BProvider } from "@/contexts/B2BContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { WishlistProvider } from "@/contexts/WishlistContext";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({

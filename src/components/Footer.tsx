@@ -37,9 +37,9 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#" },
-    { name: "Instagram", icon: Instagram, href: "#" },
-    { name: "Twitter", icon: Twitter, href: "#" },
+    { name: "Facebook", icon: Facebook, href: "/social/facebook" },
+    { name: "Instagram", icon: Instagram, href: "/social/instagram" },
+    { name: "Twitter", icon: Twitter, href: "/social/twitter" },
   ];
 
   return (
