@@ -136,9 +136,11 @@ export default function Header() {
 
           {/* Right Side Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Search className="h-5 w-5" />
-              <span className="sr-only">Search</span>
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/collections/all-products">
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Link>
             </Button>
             <Button variant="ghost" size="icon">
               <User className="h-5 w-5" />
