@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -86,6 +88,7 @@ export default function ProductGrid() {
   const { dispatch } = useCart();
 
   const handleAddToCart = (product: Product) => {
+    console.log('Adding to cart:', product);
     dispatch({ 
       type: 'ADD_TO_CART', 
       payload: {
