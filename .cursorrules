@@ -1,0 +1,12 @@
+# Import cursor rules from levelup project
+@import /home/anonymous/workspace/git/levelup/cursor-auth-rules.md
+@import /home/anonymous/workspace/git/levelup/project-rules.mdc
+
+# Additional rules for this specific project
+- This is a Next.js project with shadcn/ui styling
+- Always use TypeScript
+- Follow the authentication patterns from levelup
+- Use the same color scheme and design system
+- Use pnpm instead of npm for package management
+- All text content should be in English
+- Use mobile-first responsive design
