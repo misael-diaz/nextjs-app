@@ -199,6 +199,75 @@ const products = {
     inStock: true,
     isNew: false,
     badge: null
+  },
+  'mesh-mary-jane-flats': {
+    id: 'mesh-mary-jane-flats',
+    name: 'Mesh Mary Jane Flats',
+    price: '$64.50',
+    originalPrice: '$128.00',
+    image: '/mesh-mary-jane-flats.jpg',
+    images: ['/mesh-mary-jane-flats.jpg', '/flat2.jpg', '/flat3.jpg', '/flat4.jpg'],
+    category: 'Flats',
+    subcategory: 'Mary Jane',
+    description: 'Delicate mesh flats with a classic Mary Jane strap, blending elegance and comfort. Perfect for both casual and dressy occasions.',
+    features: [
+      'Delicate mesh upper',
+      'Classic Mary Jane strap',
+      'Comfortable sole',
+      'Versatile styling',
+      'Elegant design'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11'],
+    colors: ['Black', 'Nude', 'White'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
+  },
+  'three-strap-slide-sandals': {
+    id: 'three-strap-slide-sandals',
+    name: 'Three-Strap Slide Sandals',
+    price: '$64.50',
+    originalPrice: '$108.00',
+    image: '/three-strap-slide-sandals.jpg',
+    images: ['/three-strap-slide-sandals.jpg', '/sandal2.jpg', '/sandal3.jpg', '/sandal4.jpg'],
+    category: 'Sandals',
+    subcategory: 'Slide',
+    description: 'Stylish slide sandals with three straps, combining comfort and fashion. Easy to slip on and perfect for warm weather.',
+    features: [
+      'Three-strap design',
+      'Slide-on style',
+      'Comfortable sole',
+      'Easy to wear',
+      'Summer perfect'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'],
+    colors: ['Black', 'Brown', 'Tan'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
+  },
+  'fisherman-wedge-sandals': {
+    id: 'fisherman-wedge-sandals',
+    name: 'Fisherman Flat-Form Wedges',
+    price: '$56.50',
+    originalPrice: '$128.00',
+    image: '/fisherman-wedge-sandals.jpg',
+    images: ['/fisherman-wedge-sandals.jpg', '/sandal2.jpg', '/sandal3.jpg', '/sandal4.jpg'],
+    category: 'Sandals',
+    subcategory: 'Wedge',
+    description: 'Trendy flat-form wedges inspired by classic fisherman sandals, offering a modern twist with comfort and style.',
+    features: [
+      'Flat-form wedge sole',
+      'Fisherman-inspired design',
+      'Comfortable height',
+      'Modern twist',
+      'Versatile styling'
+    ],
+    sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5'],
+    colors: ['Natural', 'Black', 'Brown'],
+    inStock: true,
+    isNew: false,
+    badge: 'Sale'
   }
 };
 
