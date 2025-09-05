@@ -30,7 +30,7 @@ const flatsProducts: Product[] = [
     id: "ballet-flat-black",
     name: "Classic Ballet Flats in Black Leather",
     price: "$98.00",
-    image: "/ballet-flat-black.jpg",
+    image: "/ballet-flat-black-fixed.jpg",
     category: "flats",
     subcategory: "ballet-flats",
   },

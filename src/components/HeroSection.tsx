@@ -40,7 +40,7 @@ export default function HeroSection() {
                   Shop Collection
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary">
+              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur-sm">
                 <Link href="/about">
                   Learn More
                 </Link>
