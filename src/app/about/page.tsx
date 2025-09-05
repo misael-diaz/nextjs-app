@@ -24,7 +24,7 @@ export default function AboutPage() {
         <div className="text-center mb-16 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/5 to-accent/10 rounded-3xl blur-3xl animate-pulse"></div>
           <div className="relative bg-gradient-to-br from-background/90 via-background/80 to-background/90 backdrop-blur-md rounded-3xl p-12 border-2 border-primary/20 shadow-2xl">
-            <Badge variant="secondary" className="mb-6 animate-bounce text-lg px-4 py-2">
+            <Badge variant="secondary" className="mb-6 text-lg px-4 py-2">
               ✨ About FlowStyle ✨
             </Badge>
             <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent animate-pulse">
