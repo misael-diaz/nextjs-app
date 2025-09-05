@@ -25,11 +25,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* Top Bar */}
-      <div className="bg-secondary text-secondary-foreground py-2">
+      <div className="bg-muted text-muted-foreground py-2">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center text-sm">
             <p>Free shipping on orders over $100</p>
-            <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+            <div className="flex items-center gap-2 bg-primary text-primary-foreground px-3 py-1 rounded-full">
               <span className="text-xs font-medium">Retail</span>
               <Switch checked={isB2BMode} onCheckedChange={setIsB2BMode} />
               <span className="text-xs font-medium">Business</span>
