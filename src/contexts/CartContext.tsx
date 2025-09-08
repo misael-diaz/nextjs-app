@@ -8,6 +8,8 @@ export interface CartItem {
   price: string;
   image: string;
   quantity: number;
+  isB2B?: boolean;
+  bulkPrice?: string;
 }
 
 interface CartState {
@@ -18,6 +20,7 @@ interface CartState {
 
 type CartAction =
   | { type: 'ADD_TO_CART'; payload: Omit<CartItem, 'quantity'> }
+  | { type: 'ADD_BULK_TO_CART'; payload: Omit<CartItem, 'quantity'> & { quantity: number } }
   | { type: 'REMOVE_FROM_CART'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'CLEAR_CART' }
@@ -42,6 +45,23 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         return calculateTotals({ ...state, items: updatedItems });
       } else {
         const newItem = { ...action.payload, quantity: 1 };
+        const updatedItems = [...state.items, newItem];
+        return calculateTotals({ ...state, items: updatedItems });
+      }
+    }
+
+    case 'ADD_BULK_TO_CART': {
+      const existingItem = state.items.find(item => item.id === action.payload.id);
+      
+      if (existingItem) {
+        const updatedItems = state.items.map(item =>
+          item.id === action.payload.id
+            ? { ...item, quantity: item.quantity + action.payload.quantity }
+            : item
+        );
+        return calculateTotals({ ...state, items: updatedItems });
+      } else {
+        const newItem = { ...action.payload };
         const updatedItems = [...state.items, newItem];
         return calculateTotals({ ...state, items: updatedItems });
       }
@@ -75,7 +95,9 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 const calculateTotals = (state: CartState): CartState => {
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = state.items.reduce((sum, item) => {
-    const price = parseFloat(item.price.replace('$', ''));
+    // Use bulk price if available and item is B2B, otherwise use regular price
+    const priceToUse = item.isB2B && item.bulkPrice ? item.bulkPrice : item.price;
+    const price = parseFloat(priceToUse.replace('$', ''));
     return sum + (price * item.quantity);
   }, 0);
 

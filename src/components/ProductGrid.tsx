@@ -3,12 +3,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingBag, Building2 } from "lucide-react";
+import { Heart, ShoppingBag, Building2, Package } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
 import { useB2B } from "@/contexts/B2BContext";
 import { toast } from "sonner";
+import BulkQuantitySelector from "./BulkQuantitySelector";
+import { useState, useCallback } from "react";
 
 interface Product {
   id: string;
@@ -82,20 +84,40 @@ const products: Product[] = [
 
 export default function ProductGrid() {
   const { dispatch } = useCart();
-  const { isB2BMode, getWholesalePrice } = useB2B();
+  const { isB2BMode, getWholesalePrice, getMinBulkQuantity, getBulkPrice } = useB2B();
+  const [bulkQuantities, setBulkQuantities] = useState<Record<string, { quantity: number; bulkPrice: string }>>({});
 
-  const handleAddToCart = (product: Product) => {
+  const handleSmartAddToCart = (product: Product, quantity: number = 1) => {
+    const minBulkQuantity = getMinBulkQuantity();
+    
+    const isBulk = quantity >= minBulkQuantity;
+    const finalPrice = isBulk ? getBulkPrice(product.price, quantity) : product.price;
+    
     dispatch({ 
-      type: 'ADD_TO_CART', 
+      type: isBulk ? 'ADD_BULK_TO_CART' : 'ADD_TO_CART', 
       payload: {
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.image
+        image: product.image,
+        quantity: quantity,
+        isB2B: isBulk,
+        bulkPrice: isBulk ? finalPrice : undefined
       }
     });
-    toast.success(`${product.name} added to cart!`);
+    
+    const message = isBulk 
+      ? `${quantity} units of ${product.name} added to cart with bulk pricing!`
+      : `${product.name} added to cart!`;
+    toast.success(message);
   };
+
+  const handleBulkQuantityChange = useCallback((productId: string, quantity: number, bulkPrice: string) => {
+    setBulkQuantities(prev => ({
+      ...prev,
+      [productId]: { quantity, bulkPrice }
+    }));
+  }, []);
 
   return (
     <section className="py-16 bg-background">
@@ -176,13 +198,39 @@ export default function ProductGrid() {
                   )}
                 </div>
 
-                <Button 
-                  className="w-full" 
-                  size="sm"
-                  onClick={() => handleAddToCart(product)}
-                >
-                  Add to Cart
-                </Button>
+                {isB2BMode ? (
+                  <div className="space-y-3">
+                    <BulkQuantitySelector
+                      retailPrice={product.price}
+                      onQuantityChange={(quantity, bulkPrice) => 
+                        handleBulkQuantityChange(product.id, quantity, bulkPrice)
+                      }
+                    />
+                    <Button 
+                      className="w-full" 
+                      size="sm"
+                      onClick={() => {
+                        const bulkData = bulkQuantities[product.id];
+                        if (bulkData) {
+                          handleSmartAddToCart(product, bulkData.quantity);
+                        }
+                      }}
+                      disabled={!bulkQuantities[product.id]}
+                    >
+                      <Package className="h-4 w-4 mr-2" />
+                      Add to Cart
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    className="w-full" 
+                    size="sm"
+                    onClick={() => handleSmartAddToCart(product, 1)}
+                  >
+                    <ShoppingBag className="h-4 w-4 mr-2" />
+                    Add to Cart
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}

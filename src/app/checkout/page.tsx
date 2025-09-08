@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
+import { useB2B } from '@/contexts/B2BContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, CreditCard, Lock } from 'lucide-react';
+import { ArrowLeft, CreditCard, Lock, Package, Building2, Percent } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'sonner';
@@ -31,6 +32,7 @@ interface CheckoutForm {
 
 export default function CheckoutPage() {
   const { state, dispatch } = useCart();
+  const { isB2BMode, getBulkDiscount } = useB2B();
   const [formData, setFormData] = useState<CheckoutForm>({
     email: '',
     firstName: '',
@@ -51,6 +53,32 @@ export default function CheckoutPage() {
   const handleInputChange = (field: keyof CheckoutForm, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  // Calculate savings for B2B items
+  const calculateItemSavings = (item: any) => {
+    if (!item.isB2B || !item.bulkPrice) return { savings: 0, discountPercent: 0 };
+    
+    const retailPrice = parseFloat(item.price.replace('$', ''));
+    const bulkPrice = parseFloat(item.bulkPrice.replace('$', ''));
+    const totalRetail = retailPrice * item.quantity;
+    const totalBulk = bulkPrice * item.quantity;
+    const savings = totalRetail - totalBulk;
+    const discountPercent = Math.round(getBulkDiscount(item.quantity) * 100);
+    
+    return { savings, discountPercent };
+  };
+
+  // Calculate total savings
+  const totalSavings = state.items.reduce((total, item) => {
+    const { savings } = calculateItemSavings(item);
+    return total + savings;
+  }, 0);
+
+  // Calculate total at retail price (what they would pay without B2B pricing)
+  const totalAtRetail = state.items.reduce((total, item) => {
+    const retailPrice = parseFloat(item.price.replace('$', ''));
+    return total + (retailPrice * item.quantity);
+  }, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -265,38 +293,105 @@ export default function CheckoutPage() {
           <div className="lg:col-span-1">
             <Card className="sticky top-8">
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  Order Summary
+                  {isB2BMode && (
+                    <Badge variant="default" className="text-xs">
+                      <Building2 className="h-3 w-3 mr-1" />
+                      B2B
+                    </Badge>
+                  )}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Cart Items */}
-                <div className="space-y-3">
-                  {state.items.map((item) => (
-                    <div key={item.id} className="flex gap-3">
-                      <div className="relative w-12 h-12 flex-shrink-0">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-cover rounded"
-                        />
+                <div className="space-y-4">
+                  {state.items.map((item) => {
+                    const { savings, discountPercent } = calculateItemSavings(item);
+                    const isB2BItem = item.isB2B && item.bulkPrice;
+                    
+                    return (
+                      <div key={item.id} className="border rounded-lg p-3 space-y-2">
+                        <div className="flex gap-3">
+                          <div className="relative w-12 h-12 flex-shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover rounded"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{item.name}</p>
+                            <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                            
+                            {/* Pricing Display */}
+                            <div className="space-y-1">
+                              {isB2BItem ? (
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm font-semibold text-primary">
+                                      {item.bulkPrice} each
+                                    </span>
+                                    <Badge variant="secondary" className="text-xs">
+                                      <Package className="h-3 w-3 mr-1" />
+                                      Bulk
+                                    </Badge>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-xs">
+                                    <span className="text-muted-foreground line-through">
+                                      {item.price} each
+                                    </span>
+                                    <Badge variant="default" className="text-xs">
+                                      <Percent className="h-3 w-3 mr-1" />
+                                      {discountPercent}% OFF
+                                    </Badge>
+                                  </div>
+                                  <div className="text-xs text-green-600 font-medium">
+                                    You saved: ${savings.toFixed(2)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-sm font-semibold text-primary">
+                                  {item.price} each
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{item.name}</p>
-                        <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
-                        <p className="text-sm font-semibold text-primary">{item.price}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 <Separator />
 
                 {/* Totals */}
                 <div className="space-y-2">
+                  {/* Show retail total comparison if there are B2B savings */}
+                  {totalSavings > 0 && (
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Total at Retail</span>
+                      <span className="line-through">${totalAtRetail.toFixed(2)}</span>
+                    </div>
+                  )}
+                  
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
                     <span>${state.totalPrice.toFixed(2)}</span>
                   </div>
+                  
+                  {/* Show savings if any */}
+                  {totalSavings > 0 && (
+                    <div className="flex justify-between text-sm text-green-600">
+                      <span className="flex items-center gap-1">
+                        <Percent className="h-3 w-3" />
+                        B2B Savings
+                      </span>
+                      <span>-${totalSavings.toFixed(2)}</span>
+                    </div>
+                  )}
+                  
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
                     <span className="text-green-600">Free</span>
@@ -310,6 +405,15 @@ export default function CheckoutPage() {
                     <span>Total</span>
                     <span>${(state.totalPrice * 1.08).toFixed(2)}</span>
                   </div>
+                  
+                  {/* Show total savings summary */}
+                  {totalSavings > 0 && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-3">
+                      <div className="text-sm text-green-800 font-medium text-center">
+                        🎉 You saved ${totalSavings.toFixed(2)} with B2B pricing!
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Place Order Button */}
