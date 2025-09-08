@@ -17,7 +17,7 @@ interface BulkQuantitySelectorProps {
 export default function BulkQuantitySelector({ 
   retailPrice, 
   onQuantityChange, 
-  initialQuantity = 6 
+  initialQuantity = 12 
 }: BulkQuantitySelectorProps) {
   const [quantity, setQuantity] = useState(initialQuantity);
   const { getBulkPrice, getBulkDiscount, getMinBulkQuantity } = useB2B();
@@ -38,8 +38,33 @@ export default function BulkQuantitySelector({
   const decrement = () => handleQuantityChange(quantity - 1);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || minQuantity;
-    handleQuantityChange(value);
+    const inputValue = e.target.value;
+    
+    // Allow empty input temporarily for better UX
+    if (inputValue === '') {
+      return; // Don't update state, let user continue typing
+    }
+    
+    const value = parseInt(inputValue);
+    if (isNaN(value)) {
+      return; // Don't update state for invalid input
+    }
+    
+    const validQuantity = Math.max(minQuantity, value);
+    setQuantity(validQuantity);
+    const newBulkPrice = getBulkPrice(retailPrice, validQuantity);
+    onQuantityChange(validQuantity, newBulkPrice);
+  };
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    
+    // On blur, ensure we have a valid value
+    if (inputValue === '' || isNaN(parseInt(inputValue))) {
+      setQuantity(minQuantity);
+      const newBulkPrice = getBulkPrice(retailPrice, minQuantity);
+      onQuantityChange(minQuantity, newBulkPrice);
+    }
   };
 
   return (
@@ -67,6 +92,7 @@ export default function BulkQuantitySelector({
           type="number"
           value={quantity}
           onChange={handleInputChange}
+          onBlur={handleInputBlur}
           min={minQuantity}
           className="w-20 text-center"
         />
