@@ -36,18 +36,18 @@ export const B2BProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return `$${wholesalePrice.toFixed(2)}`;
   };
 
-  // Get minimum bulk quantity for B2B purchases
+  // Get minimum bulk quantity for B2B purchases (small business focused)
   const getMinBulkQuantity = (): number => {
-    return 6; // Minimum 6 units for bulk pricing
+    return 12; // Minimum 12 units for small business bulk pricing
   };
 
-  // Calculate bulk discount based on quantity
+  // Calculate bulk discount based on quantity (small business tiers)
   const getBulkDiscount = (quantity: number): number => {
-    if (quantity < 6) return 0.2; // 20% for small quantities
-    if (quantity < 12) return 0.25; // 25% for 6-11 units
-    if (quantity < 24) return 0.3; // 30% for 12-23 units
-    if (quantity < 48) return 0.35; // 35% for 24-47 units
-    return 0.4; // 40% for 48+ units
+    if (quantity < 12) return 0.2; // 20% for small orders
+    if (quantity < 24) return 0.25; // 25% for regular orders (12-23 units)
+    if (quantity < 48) return 0.3; // 30% for bulk orders (24-47 units)
+    if (quantity < 100) return 0.35; // 35% for large orders (48-99 units)
+    return 0.4; // 40% for very large orders (100+ units)
   };
 
   // Calculate bulk price based on quantity

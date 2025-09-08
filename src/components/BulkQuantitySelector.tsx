@@ -48,7 +48,7 @@ export default function BulkQuantitySelector({
         <Package className="h-4 w-4 text-primary" />
         <Label className="text-sm font-medium">Bulk Quantity</Label>
         <Badge variant="secondary" className="text-xs">
-          Min {minQuantity} units
+          Min {minQuantity} units (Small Business)
         </Badge>
       </div>
 
@@ -107,13 +107,13 @@ export default function BulkQuantitySelector({
         </div>
       </div>
 
-      {/* Bulk pricing tiers info */}
+      {/* Small Business Bulk Pricing Tiers */}
       <div className="text-xs text-muted-foreground space-y-1">
-        <div className="font-medium">Bulk Pricing Tiers:</div>
-        <div>6-11 units: 25% off</div>
-        <div>12-23 units: 30% off</div>
-        <div>24-47 units: 35% off</div>
-        <div>48+ units: 40% off</div>
+        <div className="font-medium">Small Business Pricing Tiers:</div>
+        <div>12-23 units: 25% off</div>
+        <div>24-47 units: 30% off</div>
+        <div>48-99 units: 35% off</div>
+        <div>100+ units: 40% off</div>
       </div>
     </div>
   );
