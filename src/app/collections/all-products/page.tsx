@@ -77,7 +77,7 @@ const allProducts: Product[] = [
     id: "ballet-flat-nude",
     name: "Classic Ballet Flats in Nude Leather",
     price: "$98.00",
-    image: "/ballet-flat-nude-ai.jpg",
+    image: "/ballet-flat-nude-new.jpg",
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Nude"],
