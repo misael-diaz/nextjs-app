@@ -20,6 +20,7 @@ export default function BulkQuantitySelector({
   initialQuantity = 12 
 }: BulkQuantitySelectorProps) {
   const [quantity, setQuantity] = useState(initialQuantity);
+  const [inputValue, setInputValue] = useState(initialQuantity.toString());
   const { getBulkPrice, getBulkDiscount, getMinBulkQuantity } = useB2B();
 
   const minQuantity = getMinBulkQuantity();
@@ -30,6 +31,7 @@ export default function BulkQuantitySelector({
   const handleQuantityChange = (newQuantity: number) => {
     const validQuantity = Math.max(minQuantity, newQuantity);
     setQuantity(validQuantity);
+    setInputValue(validQuantity.toString());
     const newBulkPrice = getBulkPrice(retailPrice, validQuantity);
     onQuantityChange(validQuantity, newBulkPrice);
   };
@@ -38,16 +40,17 @@ export default function BulkQuantitySelector({
   const decrement = () => handleQuantityChange(quantity - 1);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+    const newInputValue = e.target.value;
+    setInputValue(newInputValue); // Always update input display
     
-    // Allow empty input temporarily for better UX
-    if (inputValue === '') {
-      return; // Don't update state, let user continue typing
+    // Only update quantity if input is valid
+    if (newInputValue === '') {
+      return; // Allow empty input
     }
     
-    const value = parseInt(inputValue);
+    const value = parseInt(newInputValue);
     if (isNaN(value)) {
-      return; // Don't update state for invalid input
+      return; // Don't update quantity for invalid input
     }
     
     const validQuantity = Math.max(minQuantity, value);
@@ -61,9 +64,14 @@ export default function BulkQuantitySelector({
     
     // On blur, ensure we have a valid value
     if (inputValue === '' || isNaN(parseInt(inputValue))) {
-      setQuantity(minQuantity);
-      const newBulkPrice = getBulkPrice(retailPrice, minQuantity);
-      onQuantityChange(minQuantity, newBulkPrice);
+      const validQuantity = minQuantity;
+      setQuantity(validQuantity);
+      setInputValue(validQuantity.toString());
+      const newBulkPrice = getBulkPrice(retailPrice, validQuantity);
+      onQuantityChange(validQuantity, newBulkPrice);
+    } else {
+      // Sync input value with actual quantity
+      setInputValue(quantity.toString());
     }
   };
 
@@ -90,7 +98,7 @@ export default function BulkQuantitySelector({
         
         <Input
           type="number"
-          value={quantity}
+          value={inputValue}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
           min={minQuantity}
