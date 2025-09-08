@@ -84,36 +84,32 @@ const products: Product[] = [
 
 export default function ProductGrid() {
   const { dispatch } = useCart();
-  const { isB2BMode, getWholesalePrice } = useB2B();
+  const { isB2BMode, getWholesalePrice, getMinBulkQuantity, getBulkPrice } = useB2B();
   const [bulkQuantities, setBulkQuantities] = useState<Record<string, { quantity: number; bulkPrice: string }>>({});
 
-  const handleAddToCart = (product: Product) => {
+  const handleSmartAddToCart = (product: Product, quantity: number = 1) => {
+    const minBulkQuantity = getMinBulkQuantity();
+    
+    const isBulk = quantity >= minBulkQuantity;
+    const finalPrice = isBulk ? getBulkPrice(product.price, quantity) : product.price;
+    
     dispatch({ 
-      type: 'ADD_TO_CART', 
-      payload: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image
-      }
-    });
-    toast.success(`${product.name} added to cart!`);
-  };
-
-  const handleBulkAddToCart = (product: Product, quantity: number, bulkPrice: string) => {
-    dispatch({ 
-      type: 'ADD_BULK_TO_CART', 
+      type: isBulk ? 'ADD_BULK_TO_CART' : 'ADD_TO_CART', 
       payload: {
         id: product.id,
         name: product.name,
         price: product.price,
         image: product.image,
-        quantity,
-        isB2B: true,
-        bulkPrice
+        quantity: quantity,
+        isB2B: isBulk,
+        bulkPrice: isBulk ? finalPrice : undefined
       }
     });
-    toast.success(`${quantity} units of ${product.name} added to cart!`);
+    
+    const message = isBulk 
+      ? `${quantity} units of ${product.name} added to cart with bulk pricing!`
+      : `${product.name} added to cart!`;
+    toast.success(message);
   };
 
   const handleBulkQuantityChange = (productId: string, quantity: number, bulkPrice: string) => {
@@ -216,29 +212,20 @@ export default function ProductGrid() {
                       onClick={() => {
                         const bulkData = bulkQuantities[product.id];
                         if (bulkData) {
-                          handleBulkAddToCart(product, bulkData.quantity, bulkData.bulkPrice);
+                          handleSmartAddToCart(product, bulkData.quantity);
                         }
                       }}
                       disabled={!bulkQuantities[product.id]}
                     >
                       <Package className="h-4 w-4 mr-2" />
-                      Add Bulk to Cart
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      className="w-full" 
-                      size="sm"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <ShoppingBag className="h-4 w-4 mr-2" />
-                      Add Single to Cart
+                      Add to Cart
                     </Button>
                   </div>
                 ) : (
                   <Button 
                     className="w-full" 
                     size="sm"
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() => handleSmartAddToCart(product, 1)}
                   >
                     <ShoppingBag className="h-4 w-4 mr-2" />
                     Add to Cart
