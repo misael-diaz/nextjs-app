@@ -74,6 +74,12 @@ export default function CheckoutPage() {
     return total + savings;
   }, 0);
 
+  // Calculate total at retail price (what they would pay without B2B pricing)
+  const totalAtRetail = state.items.reduce((total, item) => {
+    const retailPrice = parseFloat(item.price.replace('$', ''));
+    return total + (retailPrice * item.quantity);
+  }, 0);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -362,6 +368,14 @@ export default function CheckoutPage() {
 
                 {/* Totals */}
                 <div className="space-y-2">
+                  {/* Show retail total comparison if there are B2B savings */}
+                  {totalSavings > 0 && (
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Total at Retail</span>
+                      <span className="line-through">${totalAtRetail.toFixed(2)}</span>
+                    </div>
+                  )}
+                  
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
                     <span>${state.totalPrice.toFixed(2)}</span>
