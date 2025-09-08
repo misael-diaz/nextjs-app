@@ -10,7 +10,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useB2B } from "@/contexts/B2BContext";
 import { toast } from "sonner";
 import BulkQuantitySelector from "./BulkQuantitySelector";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 interface Product {
   id: string;
@@ -112,12 +112,12 @@ export default function ProductGrid() {
     toast.success(message);
   };
 
-  const handleBulkQuantityChange = (productId: string, quantity: number, bulkPrice: string) => {
+  const handleBulkQuantityChange = useCallback((productId: string, quantity: number, bulkPrice: string) => {
     setBulkQuantities(prev => ({
       ...prev,
       [productId]: { quantity, bulkPrice }
     }));
-  };
+  }, []);
 
   return (
     <section className="py-16 bg-background">
