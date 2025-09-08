@@ -334,6 +334,17 @@ export default function AllProductsPage() {
     }
   };
 
+  const clearAllFilters = () => {
+    setSelectedCategory("all");
+    setSelectedColor("all");
+    setSelectedMaterial("all");
+    setSelectedSize("all");
+    setSelectedBrand("all");
+    setSelectedPriceRange("all");
+    setActiveSearchTerm("");
+    setSearchTerm("");
+  };
+
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       // Price range filtering
@@ -624,6 +635,13 @@ export default function AllProductsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Button 
+              variant="outline" 
+              onClick={clearAllFilters}
+              className="w-full sm:w-auto"
+            >
+              Clear All Filters
+            </Button>
           </div>
         </div>
 
