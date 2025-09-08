@@ -17,7 +17,7 @@ interface BulkQuantitySelectorProps {
 export default function BulkQuantitySelector({ 
   retailPrice, 
   onQuantityChange, 
-  initialQuantity = 12 
+  initialQuantity = 1 
 }: BulkQuantitySelectorProps) {
   const [quantity, setQuantity] = useState(initialQuantity);
   const [inputValue, setInputValue] = useState(initialQuantity.toString());
@@ -81,7 +81,7 @@ export default function BulkQuantitySelector({
         <Package className="h-4 w-4 text-primary" />
         <Label className="text-sm font-medium">Bulk Quantity</Label>
         <Badge variant="secondary" className="text-xs">
-          Min {minQuantity} units (Small Business)
+          B2B Flexible Pricing
         </Badge>
       </div>
 
@@ -141,13 +141,14 @@ export default function BulkQuantitySelector({
         </div>
       </div>
 
-      {/* Small Business Bulk Pricing Tiers */}
+      {/* B2B Flexible Pricing Tiers */}
       <div className="text-xs text-muted-foreground space-y-1">
-        <div className="font-medium">Small Business Pricing Tiers:</div>
-        <div>12-23 units: 25% off</div>
-        <div>24-47 units: 30% off</div>
-        <div>48-99 units: 35% off</div>
-        <div>100+ units: 40% off</div>
+        <div className="font-medium">B2B Pricing Tiers:</div>
+        <div>1-11 units: 20% off (B2B pricing)</div>
+        <div>12-23 units: 25% off (bulk pricing)</div>
+        <div>24-47 units: 30% off (bulk pricing)</div>
+        <div>48-99 units: 35% off (bulk pricing)</div>
+        <div>100+ units: 40% off (bulk pricing)</div>
       </div>
     </div>
   );

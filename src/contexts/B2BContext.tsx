@@ -38,7 +38,7 @@ export const B2BProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Get minimum bulk quantity for B2B purchases (small business focused)
   const getMinBulkQuantity = (): number => {
-    return 12; // Minimum 12 units for small business bulk pricing
+    return 1; // Minimum 1 unit - allow any quantity for B2B flexibility
   };
 
   // Calculate bulk discount based on quantity (small business tiers)
