@@ -27,6 +27,7 @@ interface Product {
   category: string;
   subcategory: string;
   colors?: string[];
+  materials?: string[];
 }
 
 // All products from all categories
@@ -40,6 +41,7 @@ const allProducts: Product[] = [
     category: "heels",
     subcategory: "stilettos",
     colors: ["Black"],
+    materials: ["Leather"],
   },
   {
     id: "block-heel-nude",
@@ -72,6 +74,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Black"],
+    materials: ["Leather"],
   },
   {
     id: "ballet-flat-nude",
@@ -81,6 +84,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Nude"],
+    materials: ["Leather"],
   },
   {
     id: "ballet-flat-red",
@@ -90,6 +94,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Red"],
+    materials: ["Leather"],
   },
   {
     id: "ballet-flat-navy",
@@ -99,6 +104,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Navy"],
+    materials: ["Leather"],
   },
   {
     id: "mesh-mary-jane-flats",
@@ -111,6 +117,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "mary-janes",
     colors: ["Black"],
+    materials: ["Mesh"],
   },
   {
     id: "comfort-oxfords",
@@ -143,6 +150,7 @@ const allProducts: Product[] = [
     category: "boots",
     subcategory: "knee-high",
     colors: ["Black"],
+    materials: ["Suede"],
   },
   {
     id: "stevie-knee-high-suede-brown",
@@ -152,6 +160,7 @@ const allProducts: Product[] = [
     category: "boots",
     subcategory: "knee-high",
     colors: ["Brown"],
+    materials: ["Suede"],
   },
   {
     id: "stevie-knee-high-suede-tan",
@@ -202,6 +211,7 @@ const allProducts: Product[] = [
     category: "sneakers",
     subcategory: "canvas",
     colors: ["White"],
+    materials: ["Canvas"],
   },
   {
     id: "canvas-sneaker-black",
@@ -211,6 +221,7 @@ const allProducts: Product[] = [
     category: "sneakers",
     subcategory: "canvas",
     colors: ["Black"],
+    materials: ["Canvas"],
   },
   {
     id: "canvas-sneaker-navy",
@@ -295,6 +306,7 @@ export default function AllProductsPage() {
   const [activeSearchTerm, setActiveSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedColor, setSelectedColor] = useState("all");
+  const [selectedMaterial, setSelectedMaterial] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
@@ -314,10 +326,11 @@ export default function AllProductsPage() {
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       if (!activeSearchTerm.trim()) {
-        // If no search term, filter by category and color
+        // If no search term, filter by category, color, and material
         const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
         const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
-        return matchesCategory && matchesColor;
+        const matchesMaterial = selectedMaterial === "all" || (product.materials && product.materials.includes(selectedMaterial));
+        return matchesCategory && matchesColor && matchesMaterial;
       }
       
       const searchLower = activeSearchTerm.toLowerCase().trim();
@@ -328,10 +341,11 @@ export default function AllProductsPage() {
       
       const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
       const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
+      const matchesMaterial = selectedMaterial === "all" || (product.materials && product.materials.includes(selectedMaterial));
       
-      return matchesSearch && matchesCategory && matchesColor;
+      return matchesSearch && matchesCategory && matchesColor && matchesMaterial;
     });
-  }, [activeSearchTerm, selectedCategory, selectedColor]);
+  }, [activeSearchTerm, selectedCategory, selectedColor, selectedMaterial]);
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -376,9 +390,25 @@ export default function AllProductsPage() {
     return Array.from(colorSet).sort();
   }, []);
 
+  // Extract unique materials from all products
+  const availableMaterials = useMemo(() => {
+    const materialSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.materials) {
+        product.materials.forEach(material => materialSet.add(material));
+      }
+    });
+    return Array.from(materialSet).sort();
+  }, []);
+
   const colorOptions = [
     { value: "all", label: "All Colors" },
     ...availableColors.map(color => ({ value: color, label: color }))
+  ];
+
+  const materialOptions = [
+    { value: "all", label: "All Materials" },
+    ...availableMaterials.map(material => ({ value: material, label: material }))
   ];
 
   const sortOptions = [
@@ -458,6 +488,18 @@ export default function AllProductsPage() {
                 {colorOptions.map((color) => (
                   <SelectItem key={color.value} value={color.value}>
                     {color.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedMaterial} onValueChange={setSelectedMaterial}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Material" />
+              </SelectTrigger>
+              <SelectContent>
+                {materialOptions.map((material) => (
+                  <SelectItem key={material.value} value={material.value}>
+                    {material.label}
                   </SelectItem>
                 ))}
               </SelectContent>
