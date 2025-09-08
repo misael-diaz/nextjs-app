@@ -296,8 +296,12 @@ const products = {
     id: 'comfort-oxfords',
     name: 'Comfort Oxfords in Brown Leather',
     price: '$99.00',
-    image: '/comfort-oxfords-brown.jpg',
-    images: ['/comfort-oxfords-brown.jpg', '/flat1.jpg', '/flat2.jpg', '/flat4.jpg'],
+    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=600&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=600&fit=crop&crop=center&brightness=0.3&contrast=1.5',
+      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=600&fit=crop&crop=center&sat=-50'
+    ],
     category: 'Flats',
     subcategory: 'Oxfords',
     description: 'Classic oxford shoes in rich brown leather with a comfortable sole. Perfect for both professional and casual settings.',
