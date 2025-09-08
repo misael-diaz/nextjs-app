@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,14 +22,16 @@ export default function BulkQuantitySelector({
   const [quantity, setQuantity] = useState(initialQuantity);
   const [inputValue, setInputValue] = useState(initialQuantity.toString());
   const { getBulkPrice, getBulkDiscount, getMinBulkQuantity } = useB2B();
+  const hasInitialized = useRef(false);
 
   // Initialize with quantity 1 to enable button for single item purchases
   React.useEffect(() => {
-    if (initialQuantity === 1) {
+    if (initialQuantity === 1 && !hasInitialized.current) {
       const bulkPrice = getBulkPrice(retailPrice, 1);
       onQuantityChange(1, bulkPrice);
+      hasInitialized.current = true;
     }
-  }, [retailPrice, initialQuantity, onQuantityChange, getBulkPrice]);
+  }, [retailPrice, initialQuantity, getBulkPrice, onQuantityChange]);
 
   const minQuantity = getMinBulkQuantity();
   const bulkPrice = getBulkPrice(retailPrice, quantity);
