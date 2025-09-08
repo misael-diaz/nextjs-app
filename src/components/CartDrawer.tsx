@@ -5,13 +5,15 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Trash2, Package, Building2 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useB2B } from '@/contexts/B2BContext';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function CartDrawer() {
   const { state, dispatch } = useCart();
+  const { isB2BMode } = useB2B();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleUpdateQuantity = (id: string, quantity: number) => {
@@ -47,6 +49,12 @@ export default function CartDrawer() {
           <SheetTitle className="flex items-center gap-2">
             <ShoppingCart className="h-5 w-5" />
             Shopping Cart ({state.totalItems} {state.totalItems === 1 ? 'item' : 'items'})
+            {isB2BMode && (
+              <Badge variant="default" className="ml-2">
+                <Building2 className="h-3 w-3 mr-1" />
+                B2B Mode
+              </Badge>
+            )}
           </SheetTitle>
         </SheetHeader>
 
@@ -79,7 +87,22 @@ export default function CartDrawer() {
                       
                       <div className="flex-1 min-w-0">
                         <h3 className="font-medium text-sm truncate">{item.name}</h3>
-                        <p className="text-primary font-semibold">{item.price}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-primary font-semibold">
+                            {item.isB2B && item.bulkPrice ? item.bulkPrice : item.price}
+                          </p>
+                          {item.isB2B && item.bulkPrice && (
+                            <div className="flex items-center gap-1">
+                              <Badge variant="secondary" className="text-xs">
+                                <Package className="h-3 w-3 mr-1" />
+                                Bulk
+                              </Badge>
+                              <span className="text-xs text-muted-foreground line-through">
+                                {item.price}
+                              </span>
+                            </div>
+                          )}
+                        </div>
                         
                         <div className="flex items-center gap-2 mt-2">
                           <div className="flex items-center border rounded">

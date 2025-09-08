@@ -6,6 +6,9 @@ interface B2BContextType {
   isB2BMode: boolean;
   setIsB2BMode: (value: boolean) => void;
   getWholesalePrice: (retailPrice: string) => string;
+  getBulkPrice: (retailPrice: string, quantity: number) => string;
+  getBulkDiscount: (quantity: number) => number;
+  getMinBulkQuantity: () => number;
 }
 
 const B2BContext = createContext<B2BContextType | null>(null);
@@ -33,8 +36,37 @@ export const B2BProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return `$${wholesalePrice.toFixed(2)}`;
   };
 
+  // Get minimum bulk quantity for B2B purchases
+  const getMinBulkQuantity = (): number => {
+    return 6; // Minimum 6 units for bulk pricing
+  };
+
+  // Calculate bulk discount based on quantity
+  const getBulkDiscount = (quantity: number): number => {
+    if (quantity < 6) return 0.2; // 20% for small quantities
+    if (quantity < 12) return 0.25; // 25% for 6-11 units
+    if (quantity < 24) return 0.3; // 30% for 12-23 units
+    if (quantity < 48) return 0.35; // 35% for 24-47 units
+    return 0.4; // 40% for 48+ units
+  };
+
+  // Calculate bulk price based on quantity
+  const getBulkPrice = (retailPrice: string, quantity: number): string => {
+    const price = parseFloat(retailPrice.replace('$', ''));
+    const discount = getBulkDiscount(quantity);
+    const bulkPrice = price * (1 - discount);
+    return `$${bulkPrice.toFixed(2)}`;
+  };
+
   return (
-    <B2BContext.Provider value={{ isB2BMode, setIsB2BMode, getWholesalePrice }}>
+    <B2BContext.Provider value={{ 
+      isB2BMode, 
+      setIsB2BMode, 
+      getWholesalePrice, 
+      getBulkPrice, 
+      getBulkDiscount, 
+      getMinBulkQuantity 
+    }}>
       {children}
     </B2BContext.Provider>
   );

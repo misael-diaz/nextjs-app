@@ -1,0 +1,120 @@
+"use client";
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Plus, Minus, Package } from 'lucide-react';
+import { useB2B } from '@/contexts/B2BContext';
+
+interface BulkQuantitySelectorProps {
+  retailPrice: string;
+  onQuantityChange: (quantity: number, bulkPrice: string) => void;
+  initialQuantity?: number;
+}
+
+export default function BulkQuantitySelector({ 
+  retailPrice, 
+  onQuantityChange, 
+  initialQuantity = 6 
+}: BulkQuantitySelectorProps) {
+  const [quantity, setQuantity] = useState(initialQuantity);
+  const { getBulkPrice, getBulkDiscount, getMinBulkQuantity } = useB2B();
+
+  const minQuantity = getMinBulkQuantity();
+  const bulkPrice = getBulkPrice(retailPrice, quantity);
+  const discount = getBulkDiscount(quantity);
+  const discountPercent = Math.round(discount * 100);
+
+  const handleQuantityChange = (newQuantity: number) => {
+    const validQuantity = Math.max(minQuantity, newQuantity);
+    setQuantity(validQuantity);
+    const newBulkPrice = getBulkPrice(retailPrice, validQuantity);
+    onQuantityChange(validQuantity, newBulkPrice);
+  };
+
+  const increment = () => handleQuantityChange(quantity + 1);
+  const decrement = () => handleQuantityChange(quantity - 1);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || minQuantity;
+    handleQuantityChange(value);
+  };
+
+  return (
+    <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+      <div className="flex items-center gap-2">
+        <Package className="h-4 w-4 text-primary" />
+        <Label className="text-sm font-medium">Bulk Quantity</Label>
+        <Badge variant="secondary" className="text-xs">
+          Min {minQuantity} units
+        </Badge>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={decrement}
+          disabled={quantity <= minQuantity}
+          className="h-8 w-8 p-0"
+        >
+          <Minus className="h-3 w-3" />
+        </Button>
+        
+        <Input
+          type="number"
+          value={quantity}
+          onChange={handleInputChange}
+          min={minQuantity}
+          className="w-20 text-center"
+        />
+        
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={increment}
+          className="h-8 w-8 p-0"
+        >
+          <Plus className="h-3 w-3" />
+        </Button>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-muted-foreground">Retail Price:</span>
+          <span className="line-through">{retailPrice}</span>
+        </div>
+        
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-muted-foreground">Bulk Price:</span>
+          <span className="font-semibold text-primary">{bulkPrice}</span>
+        </div>
+        
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-muted-foreground">Discount:</span>
+          <Badge variant="default" className="text-xs">
+            {discountPercent}% OFF
+          </Badge>
+        </div>
+        
+        <div className="flex justify-between items-center text-sm font-medium">
+          <span>Total ({quantity} units):</span>
+          <span className="text-lg font-bold text-primary">
+            ${(parseFloat(bulkPrice.replace('$', '')) * quantity).toFixed(2)}
+          </span>
+        </div>
+      </div>
+
+      {/* Bulk pricing tiers info */}
+      <div className="text-xs text-muted-foreground space-y-1">
+        <div className="font-medium">Bulk Pricing Tiers:</div>
+        <div>6-11 units: 25% off</div>
+        <div>12-23 units: 30% off</div>
+        <div>24-47 units: 35% off</div>
+        <div>48+ units: 40% off</div>
+      </div>
+    </div>
+  );
+}
