@@ -39,7 +39,7 @@ const allProducts: Product[] = [
     id: "classic-heel-black",
     name: "Classic Pointed Toe Heels in Black Leather",
     price: "$198.00",
-    image: "/classic-heel-black-burst.jpg",
+    image: "/classic-heel-black-fixed.jpg",
     category: "heels",
     subcategory: "stilettos",
     colors: ["Black"],
