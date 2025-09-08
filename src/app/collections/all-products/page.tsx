@@ -27,6 +27,9 @@ interface Product {
   category: string;
   subcategory: string;
   colors?: string[];
+  materials?: string[];
+  sizes?: string[];
+  brand?: string;
 }
 
 // All products from all categories
@@ -36,10 +39,13 @@ const allProducts: Product[] = [
     id: "classic-heel-black",
     name: "Classic Pointed Toe Heels in Black Leather",
     price: "$198.00",
-    image: "/classic-heel-black-burst.jpg",
+    image: "/classic-heel-black-fixed.jpg",
     category: "heels",
     subcategory: "stilettos",
     colors: ["Black"],
+    materials: ["Leather"],
+    sizes: ["6", "7", "8", "9", "10"],
+    brand: "FlowStyle",
   },
   {
     id: "block-heel-nude",
@@ -72,6 +78,9 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Black"],
+    materials: ["Leather"],
+    sizes: ["5", "6", "7", "8", "9", "10", "11"],
+    brand: "FlowStyle",
   },
   {
     id: "ballet-flat-nude",
@@ -81,6 +90,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Nude"],
+    materials: ["Leather"],
   },
   {
     id: "ballet-flat-red",
@@ -90,6 +100,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Red"],
+    materials: ["Leather"],
   },
   {
     id: "ballet-flat-navy",
@@ -99,6 +110,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "ballet-flats",
     colors: ["Navy"],
+    materials: ["Leather"],
   },
   {
     id: "mesh-mary-jane-flats",
@@ -111,6 +123,7 @@ const allProducts: Product[] = [
     category: "flats",
     subcategory: "mary-janes",
     colors: ["Black"],
+    materials: ["Mesh"],
   },
   {
     id: "comfort-oxfords",
@@ -143,6 +156,7 @@ const allProducts: Product[] = [
     category: "boots",
     subcategory: "knee-high",
     colors: ["Black"],
+    materials: ["Suede"],
   },
   {
     id: "stevie-knee-high-suede-brown",
@@ -152,6 +166,7 @@ const allProducts: Product[] = [
     category: "boots",
     subcategory: "knee-high",
     colors: ["Brown"],
+    materials: ["Suede"],
   },
   {
     id: "stevie-knee-high-suede-tan",
@@ -202,6 +217,9 @@ const allProducts: Product[] = [
     category: "sneakers",
     subcategory: "canvas",
     colors: ["White"],
+    materials: ["Canvas"],
+    sizes: ["6", "7", "8", "9", "10", "11", "12"],
+    brand: "FlowStyle",
   },
   {
     id: "canvas-sneaker-black",
@@ -211,6 +229,7 @@ const allProducts: Product[] = [
     category: "sneakers",
     subcategory: "canvas",
     colors: ["Black"],
+    materials: ["Canvas"],
   },
   {
     id: "canvas-sneaker-navy",
@@ -295,6 +314,10 @@ export default function AllProductsPage() {
   const [activeSearchTerm, setActiveSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedColor, setSelectedColor] = useState("all");
+  const [selectedMaterial, setSelectedMaterial] = useState("all");
+  const [selectedSize, setSelectedSize] = useState("all");
+  const [selectedBrand, setSelectedBrand] = useState("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
@@ -311,13 +334,45 @@ export default function AllProductsPage() {
     }
   };
 
+  const clearAllFilters = () => {
+    setSelectedCategory("all");
+    setSelectedColor("all");
+    setSelectedMaterial("all");
+    setSelectedSize("all");
+    setSelectedBrand("all");
+    setSelectedPriceRange("all");
+    setActiveSearchTerm("");
+    setSearchTerm("");
+  };
+
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
+      // Price range filtering
+      const productPrice = parseFloat(product.price.replace("$", ""));
+      let matchesPriceRange = true;
+      if (selectedPriceRange !== "all") {
+        switch (selectedPriceRange) {
+          case "under-100":
+            matchesPriceRange = productPrice < 100;
+            break;
+          case "100-200":
+            matchesPriceRange = productPrice >= 100 && productPrice <= 200;
+            break;
+          case "over-200":
+            matchesPriceRange = productPrice > 200;
+            break;
+        }
+      }
+
       if (!activeSearchTerm.trim()) {
-        // If no search term, filter by category and color
+        // If no search term, filter by all criteria
         const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
         const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
-        return matchesCategory && matchesColor;
+        const matchesMaterial = selectedMaterial === "all" || (product.materials && product.materials.includes(selectedMaterial));
+        const matchesSize = selectedSize === "all" || (product.sizes && product.sizes.includes(selectedSize));
+        const matchesBrand = selectedBrand === "all" || product.brand === selectedBrand;
+        
+        return matchesCategory && matchesColor && matchesMaterial && matchesSize && matchesBrand && matchesPriceRange;
       }
       
       const searchLower = activeSearchTerm.toLowerCase().trim();
@@ -328,10 +383,13 @@ export default function AllProductsPage() {
       
       const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
       const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
+      const matchesMaterial = selectedMaterial === "all" || (product.materials && product.materials.includes(selectedMaterial));
+      const matchesSize = selectedSize === "all" || (product.sizes && product.sizes.includes(selectedSize));
+      const matchesBrand = selectedBrand === "all" || product.brand === selectedBrand;
       
-      return matchesSearch && matchesCategory && matchesColor;
+      return matchesSearch && matchesCategory && matchesColor && matchesMaterial && matchesSize && matchesBrand && matchesPriceRange;
     });
-  }, [activeSearchTerm, selectedCategory, selectedColor]);
+  }, [activeSearchTerm, selectedCategory, selectedColor, selectedMaterial, selectedSize, selectedBrand, selectedPriceRange]);
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -376,9 +434,64 @@ export default function AllProductsPage() {
     return Array.from(colorSet).sort();
   }, []);
 
+  // Extract unique materials from all products
+  const availableMaterials = useMemo(() => {
+    const materialSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.materials) {
+        product.materials.forEach(material => materialSet.add(material));
+      }
+    });
+    return Array.from(materialSet).sort();
+  }, []);
+
+  // Extract unique sizes from all products
+  const availableSizes = useMemo(() => {
+    const sizeSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.sizes) {
+        product.sizes.forEach(size => sizeSet.add(size));
+      }
+    });
+    return Array.from(sizeSet).sort((a, b) => parseInt(a) - parseInt(b));
+  }, []);
+
+  // Extract unique brands from all products
+  const availableBrands = useMemo(() => {
+    const brandSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.brand) {
+        brandSet.add(product.brand);
+      }
+    });
+    return Array.from(brandSet).sort();
+  }, []);
+
   const colorOptions = [
     { value: "all", label: "All Colors" },
     ...availableColors.map(color => ({ value: color, label: color }))
+  ];
+
+  const materialOptions = [
+    { value: "all", label: "All Materials" },
+    ...availableMaterials.map(material => ({ value: material, label: material }))
+  ];
+
+  const sizeOptions = [
+    { value: "all", label: "All Sizes" },
+    ...availableSizes.map(size => ({ value: size, label: size }))
+  ];
+
+  const brandOptions = [
+    { value: "all", label: "All Brands" },
+    ...availableBrands.map(brand => ({ value: brand, label: brand }))
+  ];
+
+  const priceRangeOptions = [
+    { value: "all", label: "All Prices" },
+    { value: "under-100", label: "Under $100" },
+    { value: "100-200", label: "$100 - $200" },
+    { value: "over-200", label: "Over $200" }
   ];
 
   const sortOptions = [
@@ -462,6 +575,54 @@ export default function AllProductsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={selectedMaterial} onValueChange={setSelectedMaterial}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Material" />
+              </SelectTrigger>
+              <SelectContent>
+                {materialOptions.map((material) => (
+                  <SelectItem key={material.value} value={material.value}>
+                    {material.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedSize} onValueChange={setSelectedSize}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Size" />
+              </SelectTrigger>
+              <SelectContent>
+                {sizeOptions.map((size) => (
+                  <SelectItem key={size.value} value={size.value}>
+                    {size.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                {brandOptions.map((brand) => (
+                  <SelectItem key={brand.value} value={brand.value}>
+                    {brand.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Price Range" />
+              </SelectTrigger>
+              <SelectContent>
+                {priceRangeOptions.map((priceRange) => (
+                  <SelectItem key={priceRange.value} value={priceRange.value}>
+                    {priceRange.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Sort by" />
@@ -474,6 +635,13 @@ export default function AllProductsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Button 
+              variant="outline" 
+              onClick={clearAllFilters}
+              className="w-full sm:w-auto"
+            >
+              Clear All Filters
+            </Button>
           </div>
         </div>
 
