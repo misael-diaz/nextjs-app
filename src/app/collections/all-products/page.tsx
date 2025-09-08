@@ -28,6 +28,8 @@ interface Product {
   subcategory: string;
   colors?: string[];
   materials?: string[];
+  sizes?: string[];
+  brand?: string;
 }
 
 // All products from all categories
@@ -42,6 +44,8 @@ const allProducts: Product[] = [
     subcategory: "stilettos",
     colors: ["Black"],
     materials: ["Leather"],
+    sizes: ["6", "7", "8", "9", "10"],
+    brand: "FlowStyle",
   },
   {
     id: "block-heel-nude",
@@ -75,6 +79,8 @@ const allProducts: Product[] = [
     subcategory: "ballet-flats",
     colors: ["Black"],
     materials: ["Leather"],
+    sizes: ["5", "6", "7", "8", "9", "10", "11"],
+    brand: "FlowStyle",
   },
   {
     id: "ballet-flat-nude",
@@ -212,6 +218,8 @@ const allProducts: Product[] = [
     subcategory: "canvas",
     colors: ["White"],
     materials: ["Canvas"],
+    sizes: ["6", "7", "8", "9", "10", "11", "12"],
+    brand: "FlowStyle",
   },
   {
     id: "canvas-sneaker-black",
@@ -307,6 +315,9 @@ export default function AllProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedColor, setSelectedColor] = useState("all");
   const [selectedMaterial, setSelectedMaterial] = useState("all");
+  const [selectedSize, setSelectedSize] = useState("all");
+  const [selectedBrand, setSelectedBrand] = useState("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
@@ -325,12 +336,32 @@ export default function AllProductsPage() {
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
+      // Price range filtering
+      const productPrice = parseFloat(product.price.replace("$", ""));
+      let matchesPriceRange = true;
+      if (selectedPriceRange !== "all") {
+        switch (selectedPriceRange) {
+          case "under-100":
+            matchesPriceRange = productPrice < 100;
+            break;
+          case "100-200":
+            matchesPriceRange = productPrice >= 100 && productPrice <= 200;
+            break;
+          case "over-200":
+            matchesPriceRange = productPrice > 200;
+            break;
+        }
+      }
+
       if (!activeSearchTerm.trim()) {
-        // If no search term, filter by category, color, and material
+        // If no search term, filter by all criteria
         const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
         const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
         const matchesMaterial = selectedMaterial === "all" || (product.materials && product.materials.includes(selectedMaterial));
-        return matchesCategory && matchesColor && matchesMaterial;
+        const matchesSize = selectedSize === "all" || (product.sizes && product.sizes.includes(selectedSize));
+        const matchesBrand = selectedBrand === "all" || product.brand === selectedBrand;
+        
+        return matchesCategory && matchesColor && matchesMaterial && matchesSize && matchesBrand && matchesPriceRange;
       }
       
       const searchLower = activeSearchTerm.toLowerCase().trim();
@@ -342,10 +373,12 @@ export default function AllProductsPage() {
       const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
       const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
       const matchesMaterial = selectedMaterial === "all" || (product.materials && product.materials.includes(selectedMaterial));
+      const matchesSize = selectedSize === "all" || (product.sizes && product.sizes.includes(selectedSize));
+      const matchesBrand = selectedBrand === "all" || product.brand === selectedBrand;
       
-      return matchesSearch && matchesCategory && matchesColor && matchesMaterial;
+      return matchesSearch && matchesCategory && matchesColor && matchesMaterial && matchesSize && matchesBrand && matchesPriceRange;
     });
-  }, [activeSearchTerm, selectedCategory, selectedColor, selectedMaterial]);
+  }, [activeSearchTerm, selectedCategory, selectedColor, selectedMaterial, selectedSize, selectedBrand, selectedPriceRange]);
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -401,6 +434,28 @@ export default function AllProductsPage() {
     return Array.from(materialSet).sort();
   }, []);
 
+  // Extract unique sizes from all products
+  const availableSizes = useMemo(() => {
+    const sizeSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.sizes) {
+        product.sizes.forEach(size => sizeSet.add(size));
+      }
+    });
+    return Array.from(sizeSet).sort((a, b) => parseInt(a) - parseInt(b));
+  }, []);
+
+  // Extract unique brands from all products
+  const availableBrands = useMemo(() => {
+    const brandSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.brand) {
+        brandSet.add(product.brand);
+      }
+    });
+    return Array.from(brandSet).sort();
+  }, []);
+
   const colorOptions = [
     { value: "all", label: "All Colors" },
     ...availableColors.map(color => ({ value: color, label: color }))
@@ -409,6 +464,23 @@ export default function AllProductsPage() {
   const materialOptions = [
     { value: "all", label: "All Materials" },
     ...availableMaterials.map(material => ({ value: material, label: material }))
+  ];
+
+  const sizeOptions = [
+    { value: "all", label: "All Sizes" },
+    ...availableSizes.map(size => ({ value: size, label: size }))
+  ];
+
+  const brandOptions = [
+    { value: "all", label: "All Brands" },
+    ...availableBrands.map(brand => ({ value: brand, label: brand }))
+  ];
+
+  const priceRangeOptions = [
+    { value: "all", label: "All Prices" },
+    { value: "under-100", label: "Under $100" },
+    { value: "100-200", label: "$100 - $200" },
+    { value: "over-200", label: "Over $200" }
   ];
 
   const sortOptions = [
@@ -500,6 +572,42 @@ export default function AllProductsPage() {
                 {materialOptions.map((material) => (
                   <SelectItem key={material.value} value={material.value}>
                     {material.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedSize} onValueChange={setSelectedSize}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Size" />
+              </SelectTrigger>
+              <SelectContent>
+                {sizeOptions.map((size) => (
+                  <SelectItem key={size.value} value={size.value}>
+                    {size.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                {brandOptions.map((brand) => (
+                  <SelectItem key={brand.value} value={brand.value}>
+                    {brand.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Price Range" />
+              </SelectTrigger>
+              <SelectContent>
+                {priceRangeOptions.map((priceRange) => (
+                  <SelectItem key={priceRange.value} value={priceRange.value}>
+                    {priceRange.label}
                   </SelectItem>
                 ))}
               </SelectContent>
