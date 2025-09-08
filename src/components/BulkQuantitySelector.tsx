@@ -23,10 +23,12 @@ export default function BulkQuantitySelector({
   const [inputValue, setInputValue] = useState(initialQuantity.toString());
   const { getBulkPrice, getBulkDiscount, getMinBulkQuantity } = useB2B();
 
-  // Initialize with default quantity to enable the button immediately
+  // Initialize with quantity 1 to enable button for single item purchases
   React.useEffect(() => {
-    const bulkPrice = getBulkPrice(retailPrice, initialQuantity);
-    onQuantityChange(initialQuantity, bulkPrice);
+    if (initialQuantity === 1) {
+      const bulkPrice = getBulkPrice(retailPrice, 1);
+      onQuantityChange(1, bulkPrice);
+    }
   }, [retailPrice, initialQuantity, onQuantityChange, getBulkPrice]);
 
   const minQuantity = getMinBulkQuantity();
