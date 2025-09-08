@@ -26,6 +26,7 @@ interface Product {
   isNew?: boolean;
   category: string;
   subcategory: string;
+  colors?: string[];
 }
 
 // All products from all categories
@@ -35,9 +36,10 @@ const allProducts: Product[] = [
     id: "classic-heel-black",
     name: "Classic Pointed Toe Heels in Black Leather",
     price: "$198.00",
-    image: "/classic-heel-black-fixed.jpg",
+    image: "/classic-heel-black-burst.jpg",
     category: "heels",
     subcategory: "stilettos",
+    colors: ["Black"],
   },
   {
     id: "block-heel-nude",
@@ -49,6 +51,7 @@ const allProducts: Product[] = [
     isSale: true,
     category: "heels",
     subcategory: "block-heels",
+    colors: ["Nude"],
   },
   {
     id: "platform-heel-black",
@@ -57,6 +60,7 @@ const allProducts: Product[] = [
     image: "/platform-heel-black.jpg",
     category: "heels",
     subcategory: "platform",
+    colors: ["Black"],
   },
   
   // Flats
@@ -64,9 +68,37 @@ const allProducts: Product[] = [
     id: "ballet-flat-black",
     name: "Classic Ballet Flats in Black Leather",
     price: "$98.00",
-    image: "/ballet-flat-black-fixed.jpg",
+    image: "/ballet-flat-black-pexels.jpg",
     category: "flats",
     subcategory: "ballet-flats",
+    colors: ["Black"],
+  },
+  {
+    id: "ballet-flat-nude",
+    name: "Classic Ballet Flats in Nude Leather",
+    price: "$98.00",
+    image: "/ballet-flat-nude-new.jpg",
+    category: "flats",
+    subcategory: "ballet-flats",
+    colors: ["Nude"],
+  },
+  {
+    id: "ballet-flat-red",
+    name: "Classic Ballet Flats in Red Leather",
+    price: "$98.00",
+    image: "/ballet-flat-red-pexels.jpg",
+    category: "flats",
+    subcategory: "ballet-flats",
+    colors: ["Red"],
+  },
+  {
+    id: "ballet-flat-navy",
+    name: "Classic Ballet Flats in Navy Leather",
+    price: "$98.00",
+    image: "/ballet-flat-navy-new.jpg",
+    category: "flats",
+    subcategory: "ballet-flats",
+    colors: ["Navy"],
   },
   {
     id: "mesh-mary-jane-flats",
@@ -78,6 +110,7 @@ const allProducts: Product[] = [
     isSale: true,
     category: "flats",
     subcategory: "mary-janes",
+    colors: ["Black"],
   },
   {
     id: "comfort-oxfords",
@@ -86,6 +119,7 @@ const allProducts: Product[] = [
     image: "/comfort-oxfords-brown.jpg",
     category: "flats",
     subcategory: "oxfords",
+    colors: ["Brown"],
   },
   {
     id: "designer-mules",
@@ -97,32 +131,54 @@ const allProducts: Product[] = [
     isSale: true,
     category: "flats",
     subcategory: "mules",
+    colors: ["Black"],
   },
   
   // Boots
   {
-    id: "stevie-knee-high-suede",
-    name: "Stevie Knee-High Boots in Suede",
+    id: "stevie-knee-high-suede-black",
+    name: "Stevie Knee-High Boots in Black Suede",
     price: "$198.00",
-    image: "/stevie-knee-high-suede.jpg",
+    image: "/knee-high-boots-black-new.jpg",
     category: "boots",
     subcategory: "knee-high",
+    colors: ["Black"],
+  },
+  {
+    id: "stevie-knee-high-suede-brown",
+    name: "Stevie Knee-High Boots in Brown Suede",
+    price: "$198.00",
+    image: "/knee-high-boots-brown-new.jpg",
+    category: "boots",
+    subcategory: "knee-high",
+    colors: ["Brown"],
+  },
+  {
+    id: "stevie-knee-high-suede-tan",
+    name: "Stevie Knee-High Boots in Tan Suede",
+    price: "$198.00",
+    image: "/knee-high-boots-tan-new.jpg",
+    category: "boots",
+    subcategory: "knee-high",
+    colors: ["Tan"],
   },
   {
     id: "stevie-ankle-leopard",
-    name: "Stevie Ankle Boots in Leopard",
+    name: "Stevie Ankle Boots in Brown",
     price: "$178.00",
-    image: "/stevie-ankle-leopard.jpg",
+    image: "/ankle-boot-brown-pexels.jpg",
     category: "boots",
     subcategory: "ankle",
+    colors: ["Brown"],
   },
   {
     id: "stevie-ankle-stretch",
-    name: "Stevie Ankle Boots in Stretch",
+    name: "Stevie Ankle Boots in Black",
     price: "$168.00",
-    image: "/stevie-ankle-stretch.jpg",
+    image: "/ankle-boot-black-pexels.jpg",
     category: "boots",
     subcategory: "ankle",
+    colors: ["Black"],
   },
   {
     id: "combat-boots",
@@ -134,6 +190,7 @@ const allProducts: Product[] = [
     isSale: true,
     category: "boots",
     subcategory: "combat",
+    colors: ["Black"],
   },
   
   // Sneakers
@@ -141,9 +198,28 @@ const allProducts: Product[] = [
     id: "canvas-sneaker-white",
     name: "Canvas Sneakers in White",
     price: "$88.00",
-    image: "/canvas-sneaker-white-new.jpg",
+    image: "/canvas-sneakers-white-new.jpg",
     category: "sneakers",
     subcategory: "canvas",
+    colors: ["White"],
+  },
+  {
+    id: "canvas-sneaker-black",
+    name: "Canvas Sneakers in Black",
+    price: "$88.00",
+    image: "/canvas-sneakers-black-new.jpg",
+    category: "sneakers",
+    subcategory: "canvas",
+    colors: ["Black"],
+  },
+  {
+    id: "canvas-sneaker-navy",
+    name: "Canvas Sneakers in Navy",
+    price: "$88.00",
+    image: "/canvas-sneakers-navy-new.jpg",
+    category: "sneakers",
+    subcategory: "canvas",
+    colors: ["Navy"],
   },
   
   // Sandals
@@ -154,6 +230,7 @@ const allProducts: Product[] = [
     image: "/leather-sandal-brown.jpg",
     category: "sandals",
     subcategory: "strappy",
+    colors: ["Brown"],
   },
   {
     id: "three-strap-slide-sandals",
@@ -165,6 +242,7 @@ const allProducts: Product[] = [
     isSale: true,
     category: "sandals",
     subcategory: "slide",
+    colors: ["White"],
   },
   {
     id: "fisherman-wedge-sandals",
@@ -176,16 +254,18 @@ const allProducts: Product[] = [
     isSale: true,
     category: "sandals",
     subcategory: "wedge",
+    colors: ["Tan"],
   },
   {
     id: "heeled-sandals",
-    name: "Heeled Sandals in Nude",
+    name: "Heeled Sandals in Gold",
     price: "$129.00",
     image: "/heeled-sandal-gold-new.jpg",
     badge: "New",
     isNew: true,
     category: "sandals",
     subcategory: "heeled",
+    colors: ["Gold"],
   },
   {
     id: "wedge-sandals",
@@ -194,10 +274,11 @@ const allProducts: Product[] = [
     image: "/strappy-sandal-black-new.jpg",
     category: "sandals",
     subcategory: "wedge",
+    colors: ["Black"],
   },
   {
     id: "designer-slides",
-    name: "Designer Slides in Black",
+    name: "Designer Slides in Nude",
     price: "$89.00",
     originalPrice: "$119.00",
     image: "/designer-sandal-nude-new.jpg",
@@ -205,6 +286,7 @@ const allProducts: Product[] = [
     isSale: true,
     category: "sandals",
     subcategory: "slide",
+    colors: ["Nude"],
   },
 ];
 
@@ -212,6 +294,7 @@ export default function AllProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeSearchTerm, setActiveSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedColor, setSelectedColor] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const { addToCart } = useCart();
   const { isB2BMode, getWholesalePrice } = useB2B();
@@ -231,8 +314,10 @@ export default function AllProductsPage() {
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       if (!activeSearchTerm.trim()) {
-        // If no search term, only filter by category
-        return selectedCategory === "all" || product.category === selectedCategory;
+        // If no search term, filter by category and color
+        const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+        const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
+        return matchesCategory && matchesColor;
       }
       
       const searchLower = activeSearchTerm.toLowerCase().trim();
@@ -242,10 +327,11 @@ export default function AllProductsPage() {
         product.subcategory.toLowerCase().includes(searchLower);
       
       const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+      const matchesColor = selectedColor === "all" || (product.colors && product.colors.includes(selectedColor));
       
-      return matchesSearch && matchesCategory;
+      return matchesSearch && matchesCategory && matchesColor;
     });
-  }, [activeSearchTerm, selectedCategory]);
+  }, [activeSearchTerm, selectedCategory, selectedColor]);
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -277,6 +363,22 @@ export default function AllProductsPage() {
     { value: "boots", label: "Boots" },
     { value: "sneakers", label: "Sneakers" },
     { value: "sandals", label: "Sandals" },
+  ];
+
+  // Extract unique colors from all products
+  const availableColors = useMemo(() => {
+    const colorSet = new Set<string>();
+    allProducts.forEach(product => {
+      if (product.colors) {
+        product.colors.forEach(color => colorSet.add(color));
+      }
+    });
+    return Array.from(colorSet).sort();
+  }, []);
+
+  const colorOptions = [
+    { value: "all", label: "All Colors" },
+    ...availableColors.map(color => ({ value: color, label: color }))
   ];
 
   const sortOptions = [
@@ -348,6 +450,18 @@ export default function AllProductsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={selectedColor} onValueChange={setSelectedColor}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="Color" />
+              </SelectTrigger>
+              <SelectContent>
+                {colorOptions.map((color) => (
+                  <SelectItem key={color.value} value={color.value}>
+                    {color.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Sort by" />
@@ -368,6 +482,7 @@ export default function AllProductsPage() {
           <p className="text-muted-foreground">
             Showing {sortedProducts.length} of {allProducts.length} products
             {selectedCategory !== "all" && ` in ${categories.find(c => c.value === selectedCategory)?.label}`}
+            {selectedColor !== "all" && ` in ${selectedColor}`}
             {activeSearchTerm && ` matching "${activeSearchTerm}"`}
           </p>
         </div>
@@ -439,7 +554,9 @@ export default function AllProductsPage() {
             <Button 
               onClick={() => {
                 setSearchTerm("");
+                setActiveSearchTerm("");
                 setSelectedCategory("all");
+                setSelectedColor("all");
               }}
               variant="outline"
             >
